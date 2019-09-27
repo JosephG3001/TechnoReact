@@ -1,0 +1,54 @@
+@import './../../App.scss';
+
+
+.top-nav {
+    background-color: $nav-bar-background-colour;    
+    color: $foreground-colour1;
+    height: $top-nav-height;
+    left: $sidebar-width;
+    position: fixed;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    box-shadow: 0 -2px 4px 2px $nav-bar-background-colour;
+    z-index: 9999;
+
+    .top-nav-menu-items {
+        display: flex;
+        margin: 0 auto;
+        height: 100%;
+        padding-right: $sidebar-width;
+        list-style: none;        
+    
+        .top-nav-menu-item {
+            display: flex;
+            align-items: stretch;
+            transition: linear 0.2s all;
+            cursor: pointer;
+
+            &:hover {
+                background-color: $nav-bar-item-hover-background-colour;
+            }
+
+            a {
+                display: flex;
+                align-items: center;
+                padding: 10px;
+                padding-right: 15px;
+                text-decoration: none !important;
+
+                .top-nav-menu-item-icon {
+                    margin: 5px;
+                    color: $nav-bar-foreground-colour;
+                }
+        
+                .top-nav-menu-item-text {
+                    color: $nav-bar-foreground-colour;
+                }
+            }
+        }
+    }
+}
+
+
+

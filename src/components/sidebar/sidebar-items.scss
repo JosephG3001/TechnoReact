@@ -1,0 +1,23 @@
+@import './../../App.scss';
+
+$spinner-size: 100px;
+
+.loading-spinner-container {
+    text-align: center;
+}
+
+.mat-spinner {
+    width: $spinner-size !important;
+    height: $spinner-size !important;
+    color: $colour1 !important;
+}
+
+
+.section-parent {
+    padding: 15px;
+
+    &:hover {
+        background-color: $colour1;
+    }
+}
+

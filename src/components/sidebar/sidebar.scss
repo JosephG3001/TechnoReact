@@ -1,0 +1,12 @@
+@import '../../App.scss';
+
+.sidebar {
+    display: block;
+    position: fixed;
+    width: $sidebar-width;
+    min-height: 100%;
+    max-height: 100%;
+    background-color: $sidebar-background-colour1;
+    color: $sidebar-foreground-colour1;
+    overflow-y: auto;
+}

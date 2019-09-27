@@ -1,0 +1,48 @@
+@import './sh.scss';
+
+$body-background-colour1: #263942;
+$foreground-colour1: #fff;
+
+$sidebar-background-colour1: #233239;
+$sidebar-background-colour2: #132229;
+$sidebar-foreground-colour1: #fff;
+
+$nav-bar-background-colour: #233239;
+$nav-bar-foreground-colour: #fff;
+$nav-bar-item-hover-colour: #00acc4;
+$nav-bar-item-hover-background-colour: #00acc4;
+
+$colour1: #00acc4;
+$colour2: #00acc4;
+
+$panel-background-colour: #fff;
+$panel-background-colour-alt: #f5f5f5;
+
+$sidebar-width: 250px;
+$top-nav-height: 65px;
+
+body {
+  background-color: $panel-background-colour-alt;
+}
+
+
+
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+      -webkit-user-select: none; /* Safari */
+       -khtml-user-select: none; /* Konqueror HTML */
+         -moz-user-select: none; /* Firefox */
+          -ms-user-select: none; /* Internet Explorer/Edge */
+              user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome and Opera */
+  }
+
+.router-outlet {
+  margin-left: $sidebar-width;
+  padding-top: $top-nav-height + 20;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+
+
