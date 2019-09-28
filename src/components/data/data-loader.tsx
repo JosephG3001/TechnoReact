@@ -142,8 +142,9 @@ export class DataLoader extends React.Component<IDataLoaderProps, AppState> {
         .then(result => result.json())
         .then(
             (result: ArticleEntity[]) => {
+                let articles = result.filter(r => r.visible === true);
                 if (this.props.LoadedArticlesAction)
-                    this.props.LoadedArticlesAction(result, sec, tech);
+                    this.props.LoadedArticlesAction(articles, sec, tech);
             },
             (error) => {
                 if (this.props.LoadedArticlesFailed) 
