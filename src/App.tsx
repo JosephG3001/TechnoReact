@@ -6,9 +6,9 @@ import TopNav from './components/top-nav/top-nav';
 import { Switch, Route, HashRouter, Router } from 'react-router-dom';
 import Articles from './components/article/articles';
 import Article from './components/article/article';
-import News from './components/news/news';
 import { createBrowserHistory } from 'history';
 import DataLoader from './components/data/data-loader';
+import LandingPage from './components/landing-page/landing-page';
 
 const history = createBrowserHistory();
 
@@ -25,7 +25,7 @@ const App: React.FC = () => {
             <Switch>
               <Route path='/articles/:parent/:child/article/:article?' component={Article} />
               <Route path='/articles/:parent/:child' component={Articles} />          
-              <Route path={'/'} exact component={News} />
+              <Route path={'/'} exact component={LandingPage} />
             </Switch>
           </div>
       </div>    

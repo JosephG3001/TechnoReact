@@ -1,7 +1,14 @@
 @import '../../App.scss';
 
-.articles {
+.loading-spinner-container,
+.error {
+    padding-top: 20px;
+}
 
+.articles {
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
     
     .articles-jumbotron {
         max-width: 900px;    

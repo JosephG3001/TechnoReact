@@ -8,8 +8,8 @@ import * as NewsActions from './../../redux/actions/news.actions';
 import { CircularProgress } from '@material-ui/core';
 
 interface INewsProps {
-    RequestNewsLoad(): void;
-    ResetNewsToIdleState(): void;
+    RequestNewsLoad?(): void;
+    ResetNewsToIdleState?(): void;
     newsState?: INewsState
 }
 

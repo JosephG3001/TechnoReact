@@ -39,9 +39,7 @@ body {
 
 .router-outlet {
   margin-left: $sidebar-width;
-  padding-top: $top-nav-height + 20;
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-top: $top-nav-height;
 }
 
 

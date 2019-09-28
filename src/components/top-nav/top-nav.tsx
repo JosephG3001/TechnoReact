@@ -40,8 +40,28 @@ export default class TopNav extends React.Component<IProps, ITopNavState> {
                         ))}
                         {
                         <li className="top-nav-menu-item">
-                            <a href="http://angular.technolibrary.co.uk/" target="_blank">
-                                <i className="top-nav-menu-item-icon material-icons">restore_page</i>
+                            <a href="https://github.com/JosephG3001" target="_blank">
+                                <i className="fab fa-github top-nav-menu-item-icon"></i>                                
+                                <span className="top-nav-menu-item-text">
+                                Github
+                            </span>
+                            </a>
+                        </li>                    
+                        }             
+                        {
+                        <li className="top-nav-menu-item">
+                            <a href="https://uk.linkedin.com/pub/joseph-gaisford/74/b98/661" target="_blank">
+                                <i className="fab fa-linkedin top-nav-menu-item-icon"></i>
+                                <span className="top-nav-menu-item-text">
+                                LinkedIn
+                            </span>
+                            </a>
+                        </li>                    
+                        }                                   
+                        {
+                        <li className="top-nav-menu-item">
+                            <a href="http://angular.technolibrary.co.uk/" target="_blank">                                
+                                <i className="fab fa-angular top-nav-menu-item-icon"></i>
                                 <span className="top-nav-menu-item-text">
                                 Angular Site
                             </span>

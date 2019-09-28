@@ -101,8 +101,10 @@ export class Article extends React.Component<IArticleProps, IArticleState> {
             );
         } else {
             return (
-                <div className="article"
-                     dangerouslySetInnerHTML={{ __html: this.state.article!.articleHtml }}>
+                <div className="article">
+                    <div className="article-content"
+                        dangerouslySetInnerHTML={{ __html: this.state.article!.articleHtml }}>
+                    </div>
                 </div>
             );
         }
