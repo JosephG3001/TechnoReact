@@ -57,7 +57,7 @@ export default class TopNav extends React.Component<IProps, ITopNavState> {
                             </span>
                             </a>
                         </li>                    
-                        }                                   
+                        }
                         {
                         <li className="top-nav-menu-item">
                             <a href="http://angular.technolibrary.co.uk/" target="_blank">                                

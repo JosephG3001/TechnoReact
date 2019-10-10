@@ -9,7 +9,7 @@ import * as ArticleActions from './../../redux/actions/article.actions';
 import * as NewsActions from './../../redux/actions/news.actions';
 import NewsEntity from "../../classes/news-entity";
 
-interface IDataLoaderProps {
+export interface IDataLoaderProps {
     LoadingNewsAction?(): void;
     LoadedNewsAction?(news: NewsEntity[]): void;
     LoadingNewsFailedAction?(errorMsg: string): void;

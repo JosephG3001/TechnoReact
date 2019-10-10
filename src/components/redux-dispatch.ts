@@ -6,9 +6,10 @@ import * as NewsActions from '../redux/actions/news.actions';
 import ArticleEntity from "../classes/article-entity";
 import Section from "../classes/section";
 import NewsEntity from "../classes/news-entity";
+import { IDataLoaderProps } from "./data/data-loader";
 
 
-export default function mapDispatchToProps(dispatch: Dispatch<AnyAction>) {
+export default function mapDispatchToProps(dispatch: Dispatch<AnyAction>): IDataLoaderProps {
     return {
         LoadingNewsAction: () => dispatch({ type: NewsActions.LOADING_NEWS_c }),        
         LoadingNewsFailedAction: (errorMsg: string) => dispatch({ type: NewsActions.LOADING_NEWS_FAILED_c }),
