@@ -60,7 +60,17 @@ export default class TopNav extends React.Component<IProps, ITopNavState> {
                         }
                         {
                         <li className="top-nav-menu-item">
-                            <a href="http://angular.technolibrary.co.uk/" target="_blank">                                
+                            <a href="http://vue.technolibrary.co.uk/" target="_blank">                                
+                                <i className="fab fa-vuejs top-nav-menu-item-icon"></i>
+                                <span className="top-nav-menu-item-text">
+                                Vue Site
+                            </span>
+                            </a>
+                        </li>                    
+                        }                        
+                        {
+                        <li className="top-nav-menu-item">
+                            <a href="http://angular.technolibrary.co.uk/" target="_blank">
                                 <i className="fab fa-angular top-nav-menu-item-icon"></i>
                                 <span className="top-nav-menu-item-text">
                                 Angular Site
