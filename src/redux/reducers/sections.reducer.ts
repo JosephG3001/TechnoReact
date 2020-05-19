@@ -2,39 +2,52 @@ import Section from "../../classes/section";
 import * as SectionsActions from '../actions/sections.actions';
 
 export interface ISectionsState {
-    currentAction: SectionsActions.SECTIONS;
+    currentAction: SectionsActions.AllSectionsAction;
     menuItems: Array<Section>;
-    errorMsg: string;
+    currentTech?: Section;
+    currentSubSection?: Section;
 }
 
 export const InitialSectionsState: ISectionsState = {
-    currentAction: SectionsActions.IDLE_c,
-    menuItems: new Array<Section>(),
-    errorMsg: '',
+    currentAction: SectionsActions.SECTIONS_IDLE,
+    menuItems: new Array<Section>(),    
 }
 
 export function sectionsReducer(state: ISectionsState = InitialSectionsState, action: SectionsActions.Actions): ISectionsState {
     switch (action.type) {
-        case (SectionsActions.LOADING_SECTIONS_c): {
+        case (SectionsActions.LOADING_SECTIONS): {
             return {
                 ...state,
-                currentAction: SectionsActions.LOADING_SECTIONS_c
+                currentAction: SectionsActions.LOADING_SECTIONS
             }
         }
 
-        case (SectionsActions.LOADED_SECTIONS_c): {
+        case (SectionsActions.LOADED_SECTIONS): {
             return {
                 ...state,
                 menuItems: action.sections,
-                currentAction: SectionsActions.LOADED_SECTIONS_c
+                currentAction: SectionsActions.LOADED_SECTIONS
             }
         }
 
-        case (SectionsActions.LOAD_SECTIONS_FAILED_c): {
+        case (SectionsActions.LOAD_SECTIONS_FAILED): {
             return {
                 ...state,
-                errorMsg: action.errorMsg,
-                currentAction: SectionsActions.LOAD_SECTIONS_FAILED_c
+                currentAction: SectionsActions.LOAD_SECTIONS_FAILED
+            }
+        }
+
+        case (SectionsActions.SET_CURRENT_TECH): {
+            return {
+                ...state,
+                currentTech: action.section,
+            }
+        }
+
+        case (SectionsActions.SET_CURRENT_SUBSECTION): {
+            return {
+                ...state,
+                currentSubSection: action.section,
             }
         }
 

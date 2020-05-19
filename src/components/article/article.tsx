@@ -1,71 +1,36 @@
-import React from 'react';
-import './article.scss';
-import { AppState } from '../../redux/reducers/root.reducer';
-import { Dispatch, AnyAction } from 'redux';
-import * as ArticleActions from './../../redux/actions/article.actions';
-import { IArticleState } from '../../redux/reducers/article.reducer';
-import { connect } from 'react-redux';
 import { CircularProgress } from '@material-ui/core';
-import { IArticlesState } from '../../redux/reducers/articles.reducer';
-import { ISectionsState } from '../../redux/reducers/sections.reducer';
+import React, { useEffect, useState } from 'react';
+import ArticleEntity from '../../classes/article-entity';
+import { getArticleFromUrl, tryStoreCurrentTechAndSubsection } from '../../tools/url-helper';
+import './article.scss';
+import { useSelector } from 'react-redux';
+import { AppState } from '../../redux/reducers/root.reducer';
+import * as ArticleActions from '../../redux/actions/articles.actions';
 
 declare var SyntaxHighlighter: any;
 
 export interface IArticleProps {
-    RequestArticleLoad(): void;
-    ResetToIdleState(): void;
-    articleState: IArticleState;
-    articlesState: IArticlesState;
-    sectionsState: ISectionsState;
+
 }
 
-export const InitialArticleState = {
-    RequestArticleLoad() {},
-    ResetToIdleState() {},
-    articleState: {},
-    articlesState: {},
-    sectionsState: {},
-} as IArticleProps;
+export const Article: React.FC<IArticleProps> = (props) => {
+    
+    const sectionsState = useSelector((state: AppState) => state.sections);
+    const articlesState = useSelector((state: AppState) => state.articles);
+    const [article, setArticle] = useState<ArticleEntity>();
 
-export class Article extends React.Component<IArticleProps, IArticleState> {    
-    constructor(props: IArticleProps) {
-        super(props);
-
-        if (props.articleState) {
-            this.state = {
-                ...props.articleState,
-                article: null,
-            };
+    useEffect(() => {
+        tryStoreCurrentTechAndSubsection();
+        const articleFromUrl = getArticleFromUrl();
+        if (articleFromUrl) {
+            if (!article || article.articleId !== articleFromUrl.articleId) {
+                setArticle(articleFromUrl);
+                highlight();
+            }            
         }
-
-        if (this.props.RequestArticleLoad)            
-            this.props.RequestArticleLoad();
-    }    
-
-    componentWillReceiveProps(nextProps: IArticleProps) {
-        if (!nextProps.sectionsState) return;
-        if (nextProps.sectionsState.menuItems.length === 0) return;        
-        if (!nextProps.articlesState) return;
-        if (nextProps.articlesState.articleList.length === 0) return;        
-
-        if (nextProps.articleState) {
-            this.state = {
-                ...nextProps.articleState,
-            };
-        }
-
-        if (this.state.currentAction === ArticleActions.LOADED_ARTICLE_c) 
-            this.props.ResetToIdleState();
-
-        if (this.state.currentAction === ArticleActions.IDLE_ARTICLE_c &&
-            this.state.location !== window.location.href) {            
-            this.props.RequestArticleLoad();   
-        }
-
-        this.highlight();
-    }
-
-    highlight() {
+    }, [articlesState.currentAction, sectionsState.currentAction]);
+    
+    function highlight() {
         let retries = 10;
         let tryHighlight = setTimeout(() => {
             SyntaxHighlighter.defaults['toolbar'] = false;
@@ -80,56 +45,26 @@ export class Article extends React.Component<IArticleProps, IArticleState> {
         }, 100);
     }
 
-    render() {
-        if (this.state.currentAction == ArticleActions.LOADING_ARTICLE_FAIL_c) {
-            return (
-                <div className="error">
-                    Error: {this.state.errorMsg}
+    return (
+        <React.Fragment>
+            {articlesState.currentAction === ArticleActions.LOADED_ARTICLES && article &&
+                <div className="article">
+                <div className="article-content"
+                    dangerouslySetInnerHTML={{ __html: article.articleHtml }}>
+                    </div>
                 </div>
-            );   
-        } else if ((this.state.currentAction === ArticleActions.LOADING_ARTICLE_c ||
-                   this.state.currentAction === ArticleActions.LOAD_ARTICLE_REQUESTED_c ||
-                   this.state.currentAction === ArticleActions.IDLE_ARTICLE_c) &&
-                   !this.state.article) {
-            return (
+            }
+
+            {articlesState.currentAction === ArticleActions.LOADING_ARTICLES &&
                 <div className="loading-spinner-container">
                     <CircularProgress className="mat-spinner"></CircularProgress>
                     <div>
                         Loading article...
                     </div>
-                </div>               
-            );
-        } else {
-            return (
-                <div className="article">
-                    <div className="article-content"
-                        dangerouslySetInnerHTML={{ __html: this.state.article!.articleHtml }}>
-                    </div>
-                </div>
-            );
-        }
-    }
+                </div>   
+            }
+        </React.Fragment>
+    );
 }
 
-const mapStateToProps = (state: AppState, ownProps: IArticleProps): IArticleProps => {
-    return {
-        ...ownProps,
-        articleState: { 
-            ...state.article,      
-        },    
-        sectionsState: state.sections,
-        articlesState: state.articles,        
-    };
-};
-
-function mapDispatchToProps(dispatch: Dispatch<AnyAction>) {
-    return {
-        RequestArticleLoad: () => dispatch({ type: ArticleActions.LOAD_ARTICLE_REQUESTED_c }),
-        ResetToIdleState: () => dispatch({ type: ArticleActions.IDLE_ARTICLE_c }),
-    }    
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Article)
+export default Article;

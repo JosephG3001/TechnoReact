@@ -3,17 +3,17 @@
 $body-background-colour1: #263942;
 $foreground-colour1: #fff;
 
-$sidebar-background-colour1: #233239;
+$sidebar-background-colour1: #2b3b44;
 $sidebar-background-colour2: #132229;
 $sidebar-foreground-colour1: #fff;
 
 $nav-bar-background-colour: #233239;
 $nav-bar-foreground-colour: #fff;
-$nav-bar-item-hover-colour: #00acc4;
-$nav-bar-item-hover-background-colour: #00acc4;
+$nav-bar-item-hover-colour: #007cc4;
+$nav-bar-item-hover-background-colour: #0096c4;
 
-$colour1: #00acc4;
-$colour2: #00acc4;
+$colour1: #1485b9;
+$colour2: #008dc4;
 
 $panel-background-colour: #fff;
 $panel-background-colour-alt: #f5f5f5;
@@ -43,4 +43,7 @@ body {
 }
 
 
-
+.collapse {
+  overflow: hidden;
+  transition: 0.3s ease-in-out;
+}

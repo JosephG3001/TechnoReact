@@ -1,8 +1,15 @@
 @import '../../App.scss';
 
-.loading-spinner-container,
-.error {
+$spinner-size: 100px;
+
+.loading-spinner-container {
     padding-top: 20px;
+    text-align: center;
+
+    .mat-spinner {
+        width: $spinner-size !important;
+        height: $spinner-size !important;
+    }
 }
 
 .articles {

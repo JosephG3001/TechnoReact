@@ -6,6 +6,5 @@ export default class Section {
     inverseParentSection: Array<Section> = [];
     sectionName: string = '';
     displayOrder: number = 0;
-    visible: boolean = false;
     icon: string = '';
 }

@@ -2,70 +2,43 @@ import ArticleEntity from './../../classes/article-entity';
 import * as ArticleActions from './../actions/article.actions';
 
 export interface IArticleState {
-    currentAction: ArticleActions.ARTICLE;
-    errorMsg: string;    
-    location: string;
-    section: string;
-    tech: string;
-    articleName: string;
+    currentAction: ArticleActions.AllArticleActions;
     article: ArticleEntity | null;
 }
 
 const InitialArticleState: IArticleState = {
-    currentAction: ArticleActions.IDLE_ARTICLE_c,
-    errorMsg: '',
-    location: '',
-    section: '',
-    tech: '',
-    articleName: '',
+    currentAction: ArticleActions.ARTICLE_IDLE,
     article: null,
 }
 
 export function articleReducer(state: IArticleState = InitialArticleState, action: ArticleActions.Actions): IArticleState {
     switch (action.type) {
-        case (ArticleActions.LOAD_ARTICLE_REQUESTED_c): {
+        case (ArticleActions.ARTICLE_IDLE): {
             return {
                 ...state,
-                currentAction: ArticleActions.LOAD_ARTICLE_REQUESTED_c,
-                location: '',
-                articleName: '',
-                section: '',
-                tech: '',
+                currentAction: ArticleActions.ARTICLE_IDLE,
             }
         }
 
-        case (ArticleActions.IDLE_ARTICLE_c): {
+        case (ArticleActions.LOADING_ARTICLE): {
             return {
                 ...state,
-                currentAction: ArticleActions.IDLE_ARTICLE_c,
-            }
-        }
-
-        case (ArticleActions.LOADING_ARTICLE_c): {
-            return {
-                ...state,
-                currentAction: ArticleActions.LOADING_ARTICLE_c,
-                location: window.location.href,
+                currentAction: ArticleActions.LOADING_ARTICLE,
             };
         }
 
-        case (ArticleActions.LOADED_ARTICLE_c): {
+        case (ArticleActions.LOADED_ARTICLE): {
             return {
                 ...state,
-                currentAction: ArticleActions.LOADED_ARTICLE_c,
-                location: window.location.href,
-                section: action.section,
-                tech: action.tech,
-                articleName: action.articleName,
+                currentAction: ArticleActions.LOADED_ARTICLE,
                 article: action.article,
             };
         }
 
-        case (ArticleActions.LOADING_ARTICLE_FAIL_c): {
+        case (ArticleActions.LOADING_ARTICLE_FAIL): {
             return {
-                ...state,
-                errorMsg: action.errorMsg,
-                currentAction: ArticleActions.LOADING_ARTICLE_FAIL_c,
+                ...state,                
+                currentAction: ArticleActions.LOADING_ARTICLE_FAIL,
             }
         }        
 

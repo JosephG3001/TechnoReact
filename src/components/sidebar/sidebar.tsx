@@ -1,19 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { loadSectionsFromApi } from '../../api/sections-service';
+import Section from '../../classes/section';
+import * as SectionsActions from '../../redux/actions/sections.actions';
+import { store } from '../../redux/reducers/root.reducer';
+import { SidebarItems } from './sidebar-items';
 import './sidebar.scss';
 
-import SidebarHeader from './sidebar-header';
-import SidebarItems from './sidebar-items';
 
-
-export default class Sidebar extends React.Component {
+export const Sidebar: React.FC = () => {
     
-    render () {
-        return (
-            <div className="sidebar">
-                <SidebarHeader></SidebarHeader>                
-                <SidebarItems ></SidebarItems>
-                
-            </div>
-        );
-    }
+    useEffect(() => {
+        loadSectionsFromApi().then((sections: Section[]) => {
+            store.dispatch({ type: SectionsActions.LOADED_SECTIONS, sections: sections });
+        });
+    }, []);
+
+    return (
+        <div className="sidebar">
+            <div className="sidebar-header">
+                Technolibrary
+            </div>           
+            <SidebarItems ></SidebarItems>        
+        </div>
+    );
 }
+
+export default Sidebar

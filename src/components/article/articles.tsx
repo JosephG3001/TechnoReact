@@ -1,120 +1,59 @@
-import React from 'react';
-import './articles.scss';
 import { CircularProgress } from '@material-ui/core';
-import { AppState } from '../../redux/reducers/root.reducer';
-import { IArticlesState } from '../../redux/reducers/articles.reducer';
-import { Dispatch, AnyAction } from 'redux';
-import { connect } from 'react-redux';
-import * as ArticleActions from './../../redux/actions/articles.actions';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { ISectionsState } from '../../redux/reducers/sections.reducer';
+import * as ArticlesActions from '../../redux/actions/articles.actions';
+import { AppState } from '../../redux/reducers/root.reducer';
+import { tryStoreCurrentTechAndSubsection } from '../../tools/url-helper';
+import './articles.scss';
 
 export interface IArticlesProps {    
-    RequestArticlesLoad(): void;
-    ResetArticlesToIdleState(): void;
-    articlesState?: IArticlesState;
-    sectionsState?: ISectionsState;
-};
 
-// export const InitialArticlesProps = {
-//     RequestArticlesLoad() {},
-//     ResetArticlesToIdleState() {},
-//     articlesState: {},
-//     sectionsState: {},
-// } as IArticlesProps;
+}
 
-export class Articles extends React.Component<IArticlesProps, IArticlesState> {
-    constructor (props: IArticlesProps) {
-        super(props);
+export const Articles: React.FC<IArticlesProps> = (props) => {
 
-        if (props.articlesState) {
-            this.state = {
-                ...props.articlesState,
-            };
-        }
+    const articlesState = useSelector((state: AppState) => state.articles);
+    const sectionsState = useSelector((state: AppState) => state.sections);
 
-        if (this.props.RequestArticlesLoad)
-            this.props.RequestArticlesLoad();    
-    }
+    useEffect(() => {
+        tryStoreCurrentTechAndSubsection();
+    });    
 
-    componentWillReceiveProps(nextProps: IArticlesProps) {
-        if (!nextProps.sectionsState) return;
-        if (nextProps.sectionsState.menuItems.length === 0) return;
-        
-        if (nextProps.articlesState &&
-            nextProps.articlesState.currentAction !== ArticleActions.LOAD_ARTICLES_REQUESTED_c) {
-            this.state = {
-                ...nextProps.articlesState,
-            };
-        }
-
-        if (this.state.currentAction === ArticleActions.LOADED_ARTICLES_c)
-            this.props.ResetArticlesToIdleState();
-
-        if (this.state.currentAction === ArticleActions.IDLE_ARTICLES_c &&
-            this.state.location !== window.location.href) {
-            this.props.RequestArticlesLoad();
-        }
-    }
-
-    render() {
-        if (this.state.currentAction == ArticleActions.LOAD_ARTICLES_FAIL_c) {
-            return (
-                <div className="error">
-                    Error: {this.state.errorMsg}
-                </div>
-            );             
-        } else if (this.state.currentAction == ArticleActions.LOADING_ARTICLES_c) {
-            return (
-                <div className="loading-spinner-container">
-                    <CircularProgress className="mat-spinner"></CircularProgress>
-                    <div>
-                        Loading articles...
-                    </div>
-                </div>
-            );
-        } else {
-            return (
+    return (
+        <div>
+            {sectionsState.currentTech && sectionsState.currentSubSection &&
                 <div className="articles">
                     <div className="articles-jumbotron">
-                        <h1>{this.state.section}</h1>
-                        <h2>{this.state.tech}</h2>
-                    </div>
-                    {this.state.articleList.map(item => (
+                        <h1>{sectionsState.currentTech.sectionName}</h1>
+                        <h2>{sectionsState.currentSubSection.sectionName}</h2>
+                    </div>  
+
+                    {articlesState.currentAction === ArticlesActions.LOADING_ARTICLES &&
+                        <div className="loading-spinner-container">
+                            <CircularProgress className="mat-spinner"></CircularProgress>
+                            <div>
+                                Loading articles...
+                            </div>
+                        </div>
+                    }
+
+                    {articlesState.currentAction === ArticlesActions.LOADED_ARTICLES && 
+                     articlesState.articleList && 
+                     articlesState.articleList.map(item => (
+                         
                         <Link key={item.articleId} 
                               className="articles-row" 
-                              to={{ pathname: "/articles/" + encodeURIComponent(this.state.section) + "/" + encodeURIComponent(this.state.tech) + "/article/" + encodeURIComponent(item.articleName) }} >
+                              to={{ pathname: "/articles/" + encodeURIComponent(sectionsState.currentTech!.sectionName) + "/" + encodeURIComponent(sectionsState.currentSubSection!.sectionName) + "/article/" + encodeURIComponent(item.articleName) }} >
                             <div className="material-icons">insert_drive_file</div>
                             <h3>{item.articleName}</h3>
                             <label>{new Date(item.articleDate).toDateString()}</label>
                         </Link>
                     ))}
                 </div>
-            );
-        }
-    }
+            }            
+        </div>
+    );
 }
 
-const mapStateToProps = (state: AppState, ownProps: IArticlesProps): IArticlesProps => {
-    return {
-        ...ownProps,
-        articlesState: { 
-             ...state.articles,
-        },    
-        sectionsState: {
-            ...state.sections
-        }        
-    };
-};
-
-function mapDispatchToProps(dispatch: Dispatch<AnyAction>) {
-    return {
-        RequestArticlesLoad: () => dispatch({ type: ArticleActions.LOAD_ARTICLES_REQUESTED_c }),
-        ResetArticlesToIdleState: () => dispatch({ type: ArticleActions.IDLE_ARTICLES_c }),
-    }    
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Articles)
+export default Articles;

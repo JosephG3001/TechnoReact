@@ -1,61 +1,41 @@
-import React from 'react';
-import './news.scss';
-import { connect } from 'react-redux';
-import { AppState } from '../../redux/reducers/root.reducer';
-import { INewsState } from '../../redux/reducers/news.reducer';
-import { AnyAction, Dispatch } from 'redux';
-import * as NewsActions from './../../redux/actions/news.actions';
 import { CircularProgress } from '@material-ui/core';
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { loadNewsFromApi } from '../../api/news-service';
+import NewsEntity from '../../classes/news-entity';
+import { INewsState } from '../../redux/reducers/news.reducer';
+import { AppState, store } from '../../redux/reducers/root.reducer';
+import * as NewsActions from './../../redux/actions/news.actions';
+import './news.scss';
 
 interface INewsProps {
-    RequestNewsLoad?(): void;
-    ResetNewsToIdleState?(): void;
-    newsState?: INewsState
+    
 }
 
-export class News extends React.Component<INewsProps, INewsState> {
-    constructor(props: INewsProps) {
-        super(props)
+export const News: React.FC<INewsProps> = () => {
 
-        if (props.newsState) {
-            this.state = {
-                ...props.newsState
-            }
-        }
+    const newsState: INewsState = useSelector((state: AppState) => state.news);
 
-        if (this.props.RequestNewsLoad)
-            this.props.RequestNewsLoad();
-    }
+    useEffect(() => {
+        loadNewsFromApi().then((result: NewsEntity[]) => {
+            store.dispatch({ type: NewsActions.LOADED_NEWS, news: result });
+        });
+    }, []);
 
-    componentWillReceiveProps(nextProps: INewsProps) {
-        if (nextProps.newsState) {
-            this.state = {
-                ...nextProps.newsState
-            }
-        }
-    }
-
-    render() {
-        if (this.state.currentAction === NewsActions.LOADING_NEWS_FAILED_c) {
-            return (
-                <div className="error">
-                    Error: {this.state.errorMsg}
-                </div>                
-            );
-        } else if (this.state.currentAction === NewsActions.LOADING_NEWS_c ||
-                   this.state.currentAction === NewsActions.LOAD_NEWS_REQUESTED_c) {
-            return (
+    return (
+        <div>
+            {newsState.currentAction === NewsActions.LOADING_NEWS &&
                 <div className="loading-spinner-container">
                     <CircularProgress className="mat-spinner"></CircularProgress>
                     <div>
                         Loading news...
                     </div>
                 </div>
-            );
-        } else {
-            return (
+            }
+
+            {newsState.currentAction === NewsActions.LOADED_NEWS &&            
                 <div className="news">
-                    {this.state.news.map(item => (
+                    {newsState.news.map(item => (
                         <div key={item.newsId} className="news-item">
                             <div className="news-header">
                                 <h3>{item.title}</h3>
@@ -67,26 +47,9 @@ export class News extends React.Component<INewsProps, INewsState> {
                         </div>
                     ))}
                 </div>
-            );
-        }
-    }
+            }
+        </div>
+    );
 }
 
-const mapStateToProps = (state: AppState, ownProps: INewsProps): INewsProps => {
-    return {
-        ...ownProps,
-        newsState: state.news
-    }
-}
-
-function mapDispatchToProps(dispatch: Dispatch<AnyAction>) {
-    return {
-        RequestNewsLoad: () => dispatch({ type: NewsActions.LOAD_NEWS_REQUESTED_c }),
-        ResetNewsToIdleState: () => dispatch({ type: NewsActions.IDLE_NEWS_c }),
-    }
-}
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(News)
+export default News;

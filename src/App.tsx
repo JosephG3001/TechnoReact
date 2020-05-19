@@ -1,14 +1,13 @@
+import { createBrowserHistory } from 'history';
 import React from 'react';
-import logo from './logo.svg';
+import { Route, Router, Switch } from 'react-router-dom';
 import './App.scss';
+import Article from './components/article/article';
+import Articles from './components/article/articles';
+import LandingPage from './components/landing-page/landing-page';
 import Sidebar from './components/sidebar/sidebar';
 import TopNav from './components/top-nav/top-nav';
-import { Switch, Route, HashRouter, Router } from 'react-router-dom';
-import Articles from './components/article/articles';
-import Article from './components/article/article';
-import { createBrowserHistory } from 'history';
-import DataLoader from './components/data/data-loader';
-import LandingPage from './components/landing-page/landing-page';
+import { ToastContainer } from 'react-toastify';
 
 const history = createBrowserHistory();
 
@@ -16,7 +15,6 @@ const App: React.FC = () => {
   return (    
     <Router history={history}>
       <div className="App">
-          <DataLoader></DataLoader>
           <TopNav></TopNav>
           <Sidebar></Sidebar>
           <header className="App-header">
@@ -28,6 +26,7 @@ const App: React.FC = () => {
               <Route path={'/'} exact component={LandingPage} />
             </Switch>
           </div>
+          <ToastContainer />
       </div>    
     </Router>
   );

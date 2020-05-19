@@ -2,53 +2,43 @@ import NewsEntity from './../../classes/news-entity';
 import * as NewsActions from './../actions/news.actions';
 
 export interface INewsState {
-    currentAction: NewsActions.NEWS;
-    errorMsg: string;
+    currentAction: NewsActions.AllNewsActions;
     news: NewsEntity[],
 }
 
 const InitialNewsState: INewsState = {
-    currentAction: NewsActions.IDLE_NEWS_c,
-    errorMsg: '',
+    currentAction: NewsActions.NEWS_IDLE,
     news: []
 }
 
 export function newsReducer(state: INewsState = InitialNewsState, action: NewsActions.Actions): INewsState {
     switch (action.type) {
-        case (NewsActions.IDLE_NEWS_c): {
+        case (NewsActions.NEWS_IDLE): {
             return {
                 ...state,
-                currentAction: NewsActions.IDLE_NEWS_c,
+                currentAction: NewsActions.NEWS_IDLE,
             }
         }
 
-        case (NewsActions.LOADED_NEWS_c): {
+        case (NewsActions.LOADED_NEWS): {
             return {
                 ...state,
-                currentAction: NewsActions.LOADED_NEWS_c,
+                currentAction: NewsActions.LOADED_NEWS,
                 news: action.news
             }
         }        
 
-        case (NewsActions.LOADING_NEWS_FAILED_c): {
+        case (NewsActions.LOADING_NEWS_FAILED): {
             return {
                 ...state,
-                currentAction: NewsActions.LOADING_NEWS_FAILED_c,
-                errorMsg: action.errorMsg
+                currentAction: NewsActions.LOADING_NEWS_FAILED,
             }
         }
 
-        case (NewsActions.LOADING_NEWS_c): {
+        case (NewsActions.LOADING_NEWS): {
             return {
                 ...state,
-                currentAction: NewsActions.LOADING_NEWS_c,
-            }
-        }
-
-        case (NewsActions.LOAD_NEWS_REQUESTED_c): {
-            return {
-                ...state,
-                currentAction: NewsActions.LOAD_NEWS_REQUESTED_c,
+                currentAction: NewsActions.LOADING_NEWS,
             }
         }
 
