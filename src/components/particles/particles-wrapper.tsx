@@ -2,15 +2,10 @@ import React from "react";
 import Particles, { IParticlesParams } from 'react-particles-js';
 
 export default class ParticleWrapper extends React.Component {
-    constructor(props: any) {
-        super(props)
-    }
-
     render() {
         return (
             <div id="particles-js-container">
                 <Particles params={config2} style={style} />
-
             </div>
         );
     }

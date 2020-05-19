@@ -1,5 +1,7 @@
 @import '../../App.scss';
 
+$spinner-size: 100px;
+
 .sidebar {
     display: block;
     position: fixed;
@@ -9,4 +11,73 @@
     background-color: $sidebar-background-colour1;
     color: $sidebar-foreground-colour1;
     overflow-y: auto;
+
+    .sidebar-header {
+        background-color: $sidebar-background-colour2;
+        height: $top-nav-height;
+        text-align: center;    
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+    
+    .loading-spinner-container {
+        text-align: center;
+
+        .mat-spinner {
+            width: $spinner-size !important;
+            height: $spinner-size !important;
+            color: $colour1 !important;
+        }        
+    }
+
+    .section-parent {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+    
+        a, 
+        .sidebar-link {
+            display: block;
+            display: flex;
+            padding: 15px;
+            width: 100%;
+        }
+    
+        .section-icon {
+            font-size: 16px;
+            margin: 0 5px;
+            color: $colour1;
+        }
+
+
+        .rotate {    
+            transition: all 0.2s linear;
+            position: absolute;
+            right: 4px;
+            
+            &.deg90 {
+                transform: rotate(90deg);
+            }    
+        }        
+    
+        &:hover {
+            background-color: $colour1;
+            
+            .section-icon {
+                color: white !important;
+            }        
+        }
+    }
+    
+    .section-children {
+        background-color: $sidebar-background-colour2;
+    }
+}
+
+
+a {
+    text-decoration: none !important;
+    color: white;
 }
