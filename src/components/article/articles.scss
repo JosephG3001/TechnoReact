@@ -22,7 +22,12 @@ $spinner-size: 100px;
         margin: 0 auto;
         padding: 15px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px, rgba(0, 0, 0, 0.12) 0px 0px 2px;
-        background-color: $panel-background-colour;
+        background-color: $body-background-colour1;
+        color: $foreground-colour1;
+
+        h2 {
+            color: $colour2;
+        }
     }
     
     .articles-row {
@@ -31,8 +36,8 @@ $spinner-size: 100px;
         margin: 15px auto;
         padding: 15px;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px, rgba(0, 0, 0, 0.12) 0px 0px 2px;
-        color: $sidebar-background-colour1;
-        background-color: $panel-background-colour;
+        color: $foreground-colour1;
+        background-color: $body-background-colour1;
         transition: background-color 0.1s linear;
 
         * {

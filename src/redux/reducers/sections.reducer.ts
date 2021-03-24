@@ -1,57 +1,71 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import loadSectionsFromApi from "../../api/sections-service";
 import Section from "../../classes/section";
-import * as SectionsActions from '../actions/sections.actions';
+import { AppDispatch, AppState } from "../store";
+
+export enum ESectionsState {
+  Idle,
+  loading,
+  loaded,
+  Failed,
+}
 
 export interface ISectionsState {
-    currentAction: SectionsActions.AllSectionsAction;
-    menuItems: Array<Section>;
-    currentTech?: Section;
-    currentSubSection?: Section;
+  currentState: ESectionsState;
+  menuItems: Array<Section>;
+  currentTech?: Section;
+  currentSubSection?: Section;
 }
 
-export const InitialSectionsState: ISectionsState = {
-    currentAction: SectionsActions.SECTIONS_IDLE,
-    menuItems: new Array<Section>(),    
-}
+const InitialSectionsState: ISectionsState = {
+  currentState: ESectionsState.Idle,
+  menuItems: [],
+};
 
-export function sectionsReducer(state: ISectionsState = InitialSectionsState, action: SectionsActions.Actions): ISectionsState {
-    switch (action.type) {
-        case (SectionsActions.LOADING_SECTIONS): {
-            return {
-                ...state,
-                currentAction: SectionsActions.LOADING_SECTIONS
-            }
-        }
+const slice = createSlice({
+  name: "sections",
+  initialState: InitialSectionsState as ISectionsState,
+  reducers: {
+    loadingSections(state) {
+      state.currentState = ESectionsState.loading;
+    },
+    loadedSections(state, action: PayloadAction<Section[]>) {
+      state.currentState = ESectionsState.loaded;
+      state.menuItems = action.payload;
+      //  tryStoreCurrentTechAndSubsection();
+    },
+    loadSectionsFailed(state) {
+      state.currentState = ESectionsState.Failed;
+    },
+    setCurrentTech(state, action: PayloadAction<Section>) {
+      state.currentTech = action.payload;
+    },
+    setCurrentSubSection(state, action: PayloadAction<Section>) {
+      state.currentSubSection = action.payload;
+    },
+  },
+});
 
-        case (SectionsActions.LOADED_SECTIONS): {
-            return {
-                ...state,
-                menuItems: action.sections,
-                currentAction: SectionsActions.LOADED_SECTIONS
-            }
-        }
+export const sectionsReducer = slice.reducer;
+export const {
+  loadingSections,
+  loadedSections,
+  loadSectionsFailed,
+  setCurrentTech,
+  setCurrentSubSection,
+} = slice.actions;
 
-        case (SectionsActions.LOAD_SECTIONS_FAILED): {
-            return {
-                ...state,
-                currentAction: SectionsActions.LOAD_SECTIONS_FAILED
-            }
-        }
+export const selectCurrentTech = (state: AppState) =>
+  state.sections.currentTech;
+export const selectCurrentSubSection = (state: AppState) =>
+  state.sections.currentSubSection;
+export const selectSections = (state: AppState) => state.sections.menuItems;
+export const selectSectionsState = (state: AppState) =>
+  state.sections.currentState;
 
-        case (SectionsActions.SET_CURRENT_TECH): {
-            return {
-                ...state,
-                currentTech: action.section,
-            }
-        }
-
-        case (SectionsActions.SET_CURRENT_SUBSECTION): {
-            return {
-                ...state,
-                currentSubSection: action.section,
-            }
-        }
-
-        default:
-            return state;
-    }
-}
+export const loadSections = () => (dispatch: AppDispatch) => {
+  dispatch(loadingSections);
+  return loadSectionsFromApi().then((sections: Section[]) => {
+    dispatch(loadedSections(sections));
+  });
+};

@@ -1,55 +1,48 @@
-import { CircularProgress } from '@material-ui/core';
-import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-import { loadNewsFromApi } from '../../api/news-service';
-import NewsEntity from '../../classes/news-entity';
-import { INewsState } from '../../redux/reducers/news.reducer';
-import { AppState, store } from '../../redux/reducers/root.reducer';
-import * as NewsActions from './../../redux/actions/news.actions';
-import './news.scss';
+import { CircularProgress } from "@material-ui/core";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import {
+  ENewsState,
+  loadNews,
+  selectNews,
+  selectNewsState,
+} from "../../redux/reducers/news.reducer";
+import { useAppDispatch } from "../../redux/store";
+import "./news.scss";
 
-interface INewsProps {
-    
-}
+export const News: React.FC = () => {
+  const news = useSelector(selectNews);
+  const newsState = useSelector(selectNewsState);
+  const dispatch = useAppDispatch();
 
-export const News: React.FC<INewsProps> = () => {
+  useEffect(() => {
+    dispatch(loadNews());
+  }, [dispatch]);
 
-    const newsState: INewsState = useSelector((state: AppState) => state.news);
-
-    useEffect(() => {
-        loadNewsFromApi().then((result: NewsEntity[]) => {
-            store.dispatch({ type: NewsActions.LOADED_NEWS, news: result });
-        });
-    }, []);
-
-    return (
-        <div>
-            {newsState.currentAction === NewsActions.LOADING_NEWS &&
-                <div className="loading-spinner-container">
-                    <CircularProgress className="mat-spinner"></CircularProgress>
-                    <div>
-                        Loading news...
-                    </div>
-                </div>
-            }
-
-            {newsState.currentAction === NewsActions.LOADED_NEWS &&            
-                <div className="news">
-                    {newsState.news.map(item => (
-                        <div key={item.newsId} className="news-item">
-                            <div className="news-header">
-                                <h3>{item.title}</h3>
-                                <span>{new Date(item.createdDate).toDateString()}</span>
-                            </div>
-                            <div>
-                                {item.html}
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            }
+  return (
+    <div>
+      {newsState === ENewsState.Loading && (
+        <div className="loading-spinner-container">
+          <CircularProgress className="mat-spinner" />
+          <div>Loading news...</div>
         </div>
-    );
-}
+      )}
+
+      {newsState === ENewsState.Loaded && (
+        <div className="news">
+          {news.map((item) => (
+            <div key={item.newsId} className="news-item">
+              <div className="news-header">
+                <h3>{item.title}</h3>
+                <span>{new Date(item.createdDate).toDateString()}</span>
+              </div>
+              <div>{item.html}</div>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export default News;

@@ -17,9 +17,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react"
+    "jsx": "react-jsx",
+    "noFallthroughCasesInSwitch": true,
+    "strictPropertyInitialization": false,
+    "noImplicitReturns": false,
   },
   "include": [
-    "src"
+    "src",
+    "public/index.js"
   ]
 }

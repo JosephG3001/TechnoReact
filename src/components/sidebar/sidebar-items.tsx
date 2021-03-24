@@ -1,38 +1,36 @@
-import CircularProgress from '@material-ui/core/CircularProgress';
-import React from 'react';
-import { useSelector } from 'react-redux';
-import Section from '../../classes/section';
-import * as SectionActions from '../../redux/actions/sections.actions';
-import { AppState } from '../../redux/reducers/root.reducer';
-import { ISectionsState } from '../../redux/reducers/sections.reducer';
-import SidebarItem from './sidebar-item';
+import CircularProgress from "@material-ui/core/CircularProgress";
+import React from "react";
+import { shallowEqual, useSelector } from "react-redux";
+import Section from "../../classes/section";
+import {
+  ESectionsState,
+  selectSections,
+  selectSectionsState,
+} from "../../redux/reducers/sections.reducer";
+import SidebarItem from "./sidebar-item";
 
-export interface ISidebarProps {
+const SidebarItems: React.FC = () => {
+  const sectionsState = useSelector(selectSectionsState);
+  const sections = useSelector(selectSections, shallowEqual);
 
+  return (
+    <div className="sidebar-items">
+      {sectionsState === ESectionsState.loading && (
+        <div className="loading-spinner-container">
+          <CircularProgress className="mat-spinner" />
+          <div>Loading menu...</div>
+        </div>
+      )}
+
+      {sectionsState === ESectionsState.loaded && (
+        <nav>
+          {sections.map((section: Section) => (
+            <SidebarItem key={section.sectionId} section={section} />
+          ))}
+        </nav>
+      )}
+    </div>
+  );
 };
 
-export const SidebarItems: React.FC<ISidebarProps> = (props) => {
-    
-    const sectionsState: ISectionsState = useSelector((state: AppState) => state.sections);
-    
-    return (
-        <div>
-            {sectionsState.currentAction === SectionActions.LOADING_SECTIONS && 
-                <div className="loading-spinner-container">
-                    <CircularProgress className="mat-spinner"></CircularProgress>
-                    <div>
-                        Loading menu...
-                    </div>
-                </div>
-            }
-
-            {sectionsState.currentAction === SectionActions.LOADED_SECTIONS &&
-                <nav>
-                    {sectionsState.menuItems.map((section: Section) => (
-                        <SidebarItem key={section.sectionId} section={section} />
-                    ))}
-                </nav>   
-            }
-        </div>
-    );
-}
+export default SidebarItems;

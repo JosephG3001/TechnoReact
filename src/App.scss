@@ -1,11 +1,13 @@
 @import './sh.scss';
 
 $body-background-colour1: #263942;
+$body-background-colour2: #132229;
 $foreground-colour1: #fff;
 
 $sidebar-background-colour1: #2b3b44;
 $sidebar-background-colour2: #132229;
 $sidebar-foreground-colour1: #fff;
+$sidebar-foreground-colour2: #aaa;
 
 $nav-bar-background-colour: #233239;
 $nav-bar-foreground-colour: #fff;
@@ -22,7 +24,7 @@ $sidebar-width: 250px;
 $top-nav-height: 65px;
 
 body {
-  background-color: $panel-background-colour-alt;
+  background-color: $body-background-colour2;
 }
 
 

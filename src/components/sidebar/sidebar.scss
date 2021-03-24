@@ -11,6 +11,7 @@ $spinner-size: 100px;
     background-color: $sidebar-background-colour1;
     color: $sidebar-foreground-colour1;
     overflow-y: auto;
+    overflow-x: hidden;
 
     .sidebar-header {
         background-color: $sidebar-background-colour2;
@@ -20,6 +21,53 @@ $spinner-size: 100px;
         justify-content: center;
         align-items: center;
         margin-bottom: 15px;
+    }
+
+    .sidebar-user {
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 27px;
+
+        .user-initials {
+            background-color: $sidebar-background-colour2;
+            color: $colour2;
+            border-radius: 50px;
+            width: 70px;
+            height: 70px;
+            line-height: 70px;
+            margin: 0 auto;
+            font-size: 2.5em;
+        }
+        
+        .welcome-label {
+            font-size: 0.8em;
+        }
+
+        .name-label {
+            font-size: 0.8em;
+        }
+    }
+
+    .sidebar-footer {
+        overflow-x: hidden;
+        background-color: $sidebar-background-colour2;
+        text-align: center;
+        bottom: 0;
+        position: fixed;
+        width: $sidebar-width;
+        color: $sidebar-foreground-colour2;
+
+        a {
+            color: $sidebar-foreground-colour2;
+        }
+
+        .sidebar-footer-inner {
+            margin: 10px;
+
+            .sidebar-footer-title {
+                color: $colour2;
+            }
+        }
     }
     
     .loading-spinner-container {
@@ -32,42 +80,49 @@ $spinner-size: 100px;
         }        
     }
 
-    .section-parent {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-    
-        a, 
-        .sidebar-link {
-            display: block;
+    .sidebar-items {
+        padding-bottom: 65px;
+        overflow-x: hidden;
+
+        .section-parent {
+            cursor: pointer;
             display: flex;
-            padding: 15px;
-            width: 100%;
-        }
-    
-        .section-icon {
-            font-size: 16px;
-            margin: 0 5px;
-            color: $colour1;
-        }
-
-
-        .rotate {    
-            transition: all 0.2s linear;
-            position: absolute;
-            right: 4px;
-            
-            &.deg90 {
-                transform: rotate(90deg);
-            }    
-        }        
-    
-        &:hover {
-            background-color: $colour1;
-            
+            align-items: center;            
+            background-color: $sidebar-background-colour2;
+        
+            a, 
+            .sidebar-link {
+                display: block;
+                display: flex;
+                padding: 12px 15px;
+                width: 100%;
+                font-size: 0.9em;
+            }
+        
             .section-icon {
-                color: white !important;
+                font-size: 16px;
+                margin: 0 5px;
+                color: $colour1;
+            }
+
+
+            .rotate {    
+                transition: all 0.2s linear;
+                position: absolute;
+                right: 4px;
+                
+                &.deg90 {
+                    transform: rotate(90deg);
+                }    
             }        
+        
+            &:hover {
+                background-color: $colour1;
+                
+                .section-icon {
+                    color: white !important;
+                }        
+            }
         }
     }
     
