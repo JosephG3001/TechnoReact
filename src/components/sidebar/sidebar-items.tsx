@@ -22,6 +22,13 @@ const SidebarItems: React.FC = () => {
         </div>
       )}
 
+      {sectionsState === ESectionsState.Failed && (
+        <div className="loading-spinner-container">
+          <i className="fas fa-exclamation-triangle" />
+          <div>Failed to load menu</div>
+        </div>
+      )}
+
       {sectionsState === ESectionsState.loaded && (
         <nav>
           {sections.map((section: Section) => (

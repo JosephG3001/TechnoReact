@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import loadSectionsFromApi from "../../api/sections-service";
 import Section from "../../classes/section";
+import { showErrorToast } from "../../tools/toast";
 import { AppDispatch, AppState } from "../store";
 
 export enum ESectionsState {
@@ -64,8 +65,13 @@ export const selectSectionsState = (state: AppState) =>
   state.sections.currentState;
 
 export const loadSections = () => (dispatch: AppDispatch) => {
-  dispatch(loadingSections);
-  return loadSectionsFromApi().then((sections: Section[]) => {
-    dispatch(loadedSections(sections));
-  });
+  dispatch(loadingSections());
+  return loadSectionsFromApi()
+    .then((sections: Section[]) => {
+      dispatch(loadedSections(sections));
+    })
+    .catch((error: string) => {
+      showErrorToast(error);
+      dispatch(loadSectionsFailed());
+    });
 };

@@ -73,11 +73,15 @@ $spinner-size: 100px;
     .loading-spinner-container {
         text-align: center;
 
-        .mat-spinner {
+        .mat-spinner, .fas {
             width: $spinner-size !important;
             height: $spinner-size !important;
             color: $colour1 !important;
         }        
+
+        .fas {
+            font-size: 5em;
+        }
     }
 
     .sidebar-items {
