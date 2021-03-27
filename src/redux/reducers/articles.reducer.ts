@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppState } from "../..";
 import ArticleEntity from "../../classes/article-entity";
-import { AppState } from "../store";
 
 export enum EArticlesState {
   Idle,

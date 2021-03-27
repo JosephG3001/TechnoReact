@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppDispatch, AppState } from "../..";
 import { loadNewsFromApi } from "../../api/news-service";
 import NewsEntity from "../../classes/news-entity";
-import { AppDispatch, AppState } from "../store";
 
 export enum ENewsState {
   Idle,

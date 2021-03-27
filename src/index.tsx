@@ -4,12 +4,16 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import App from "./App";
 import "./index.css";
-import { technoHistory, technoStore } from "./redux/store";
+import { history, store } from "./redux/store";
 import * as serviceWorker from "./serviceWorker";
 
+// eslint-disable-next-line import/prefer-default-export
+
+// const useAppDispatch = () => useDispatch<AppDispatch>();
+
 ReactDOM.render(
-  <Provider store={technoStore}>
-    <ConnectedRouter history={technoHistory}>
+  <Provider store={store}>
+    <ConnectedRouter history={history}>
       <App />
     </ConnectedRouter>
   </Provider>,

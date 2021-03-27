@@ -1,9 +1,8 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { CircularProgress } from "@material-ui/core";
 import { User } from "oidc-client";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import Content from "../components/cms/content";
 import Sidebar from "../components/sidebar/sidebar";
 import { AppState } from "../redux/store";
@@ -19,16 +18,25 @@ const CMSLayout = () => {
     userManager.getUser().then((user: User | null) => {
       if (user === null) {
         console.log("Redirecting to login....");
+        userManager.signinRedirect({
+          state: {
+            path: window.location.pathname,
+          },
+        });
         // dispatch(push("/login"));
       } else {
         userManager.signinSilent().catch((error: Error) => {
           if (error.message.indexOf("login_required") !== -1) {
-            // dispatch(push("/login"));
+            userManager.signinRedirect({
+              state: {
+                path: window.location.pathname,
+              },
+            });
           }
         });
       }
     });
-  }, [dispatch]);
+  }, [dispatch, loggedIn]);
 
   return (
     <>
@@ -39,6 +47,7 @@ const CMSLayout = () => {
           <div className="router-outlet">
             <Switch>
               <Route exact path="/cms/content" component={Content} />
+              <Redirect from="/cms" to="/cms/content" />
             </Switch>
           </div>
         </div>

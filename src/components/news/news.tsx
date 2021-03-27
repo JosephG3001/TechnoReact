@@ -1,19 +1,18 @@
 import { CircularProgress } from "@material-ui/core";
 import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   ENewsState,
   loadNews,
   selectNews,
   selectNewsState,
 } from "../../redux/reducers/news.reducer";
-import { useAppDispatch } from "../../redux/store";
 import "./news.scss";
 
 export const News: React.FC = () => {
   const news = useSelector(selectNews);
   const newsState = useSelector(selectNewsState);
-  const dispatch = useAppDispatch();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(loadNews());

@@ -1,6 +1,8 @@
 import React, { FC } from "react";
 import { Route, Switch } from "react-router";
 import "./App.scss";
+import callbackPage from "./components/callback-page";
+import ErrorPage from "./components/error-page/error-page";
 import My404Page from "./components/not-found/my-404-page";
 import CMSLayout from "./layouts/cms-layout";
 import PublicLayout from "./layouts/public-layout";
@@ -13,6 +15,9 @@ const App: FC = () => {
       <Route path="/" exact component={PublicLayout} />
 
       <Route path="/cms" exact={false} component={CMSLayout} />
+      <Route exact={false} path="/callback" component={callbackPage} />
+
+      <Route exact={false} path="/error" component={ErrorPage} />
 
       <Route exact={false} component={My404Page} />
     </Switch>

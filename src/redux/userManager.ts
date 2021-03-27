@@ -44,11 +44,6 @@ export function updateAccessToken(): void {
       // usersCurrentStoredToken = user.access_token;
       // const tokenObj: IAccessToken = JWT.default(user.access_token);
       // const teamsStore: TeamsStore = buildTeamStore(tokenObj);
-      // const newUserActionType:INewAccessTokenActionType = {
-      //     type: UserActionTypes.NEW_ACCESS_TOKEN,
-      //     accessToken: tokenObj,
-      //     teamsStore: teamsStore
-      // }
       // store.dispatch(newUserActionType);
     } else {
       // const noTokenAction:INoTokenActionType = {

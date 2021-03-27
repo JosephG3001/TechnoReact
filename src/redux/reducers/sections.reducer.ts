@@ -1,8 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppDispatch, AppState } from "../..";
 import loadSectionsFromApi from "../../api/sections-service";
 import Section from "../../classes/section";
 import { showErrorToast } from "../../tools/toast";
-import { AppDispatch, AppState } from "../store";
 
 export enum ESectionsState {
   Idle,
@@ -33,7 +33,6 @@ const slice = createSlice({
     loadedSections(state, action: PayloadAction<Section[]>) {
       state.currentState = ESectionsState.loaded;
       state.menuItems = action.payload;
-      //  tryStoreCurrentTechAndSubsection();
     },
     loadSectionsFailed(state) {
       state.currentState = ESectionsState.Failed;
