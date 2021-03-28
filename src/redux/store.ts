@@ -1,38 +1,43 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { connectRouter } from "connected-react-router";
+import { configureStore } from "@reduxjs/toolkit";
+import { connectRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory, History } from "history";
-import { reducer as oidcReducer } from "redux-oidc";
+import { combineReducers } from "redux";
+import { loadUser, reducer as oidcReducer } from "redux-oidc";
 import { articlesReducer } from "./reducers/articles.reducer";
 import { errorReducer } from "./reducers/error.reducer";
 import { newsReducer } from "./reducers/news.reducer";
 import { sectionsReducer } from "./reducers/sections.reducer";
-
-// export const technoHistory = createBrowserHistory();
+import userManager from "./userManager";
 
 // const oidcMiddleware = createOidcMiddleware(userManager);
 export const history: History = createBrowserHistory();
-// eslint-disable-next-line import/prefer-default-export
-export const getStore = () =>
-  configureStore({
-    reducer: combineReducers({
-      sections: sectionsReducer,
-      articles: articlesReducer,
-      news: newsReducer,
-      router: connectRouter(history),
-      oidcState: oidcReducer,
-      errorState: errorReducer,
-    }),
-    // middleware: (getDefaultMiddleware) => oidcMiddleware,
-    // getDefaultMiddleware({}).concat(routerMiddleware(technoHistory)),
+
+const rootReducer = combineReducers({
+  sections: sectionsReducer,
+  articles: articlesReducer,
+  news: newsReducer,
+  router: connectRouter(history),
+  oidcState: oidcReducer,
+  errorState: errorReducer,
+});
+
+const createStore = () => {
+  const localStore = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }).concat(routerMiddleware(history)),
   });
 
-export const store = getStore();
+  loadUser(localStore, userManager);
+
+  return localStore;
+};
+
+export const store = createStore();
 export type AppState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-
-// export type AppState = ReturnType<typeof technoStore.getState>;
-// export type AppDispatch = typeof technoStore.dispatch;
-// export const useAppDispatch = () => useDispatch<AppDispatch>();
 
 // export default function configureStore(history: History) {
 

@@ -1,5 +1,20 @@
 @import '../../App.scss';
 
+.loading-spinner-container {
+    color: white;
+}
+
+.error-container {
+    text-align: center;
+    color: white;
+
+    .fas {
+        font-size: 5em;
+        color: $colour2;
+        margin: 15px;;
+    }
+}
+
 .news {
     padding-left: 15px;
     padding-right: 15px;

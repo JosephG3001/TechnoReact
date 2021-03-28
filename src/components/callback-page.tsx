@@ -1,14 +1,15 @@
 import { CircularProgress } from "@material-ui/core";
-import { push } from "connected-react-router";
 import { User } from "oidc-client";
 import React from "react";
 import { connect, useDispatch } from "react-redux";
+import { useHistory } from "react-router";
 import { CallbackComponent } from "redux-oidc";
 import { setError } from "../redux/reducers/error.reducer";
 import userManager from "../redux/userManager";
 
 const CallbackPage: React.FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // useEffect(() => {
   //   debugger;
@@ -32,28 +33,16 @@ const CallbackPage: React.FC = () => {
   //       }
   //     });
   // });
-  debugger;
   const onSuccess = (user: User) => {
-    debugger;
     const { path } = user.state || {};
-    dispatch(push(path || "/cms/content"));
+    history.push(path || "/cms/content");
   };
 
   const onError = (error: any) => {
     // don't throw error for the generic oidc state error
-    debugger;
     if (error.message !== "No state in response") {
-      // dispatch({
-      //   type: ErrorActions.ADD_ERROR,
-      //   errorCode: 500,
-      //   errorMessage: `Error occured in signinRedirectCallback: ${error}`,
-      // });
-      // alert('there was a probem');
       dispatch(setError(`Error occured in signinRedirectCallback: ${error}`));
-
-      // technoHistory.push("/error");
-
-      dispatch(push("/error"));
+      history.push("/error");
     }
   };
 

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { User, UserManager, UserManagerSettings } from "oidc-client";
 import { createUserManager } from "redux-oidc";
 import { Global } from "../techno.config";
@@ -26,7 +27,7 @@ const userManagerConfig: UserManagerSettings = {
   client_id: "reactSpa",
   redirect_uri: `${Global.spaUrl}/callback`,
   response_type: "code",
-  scope: "openid profile technoapi",
+  scope: "openid profile contentapi newsapi",
   authority: Global.identityUrl,
   silent_redirect_uri: `${Global.spaUrl}/silentrenew`,
   automaticSilentRenew: true,
@@ -36,9 +37,7 @@ const userManagerConfig: UserManagerSettings = {
   includeIdTokenInSilentRenew: false,
 };
 
-const userManager: UserManager = createUserManager(userManagerConfig);
-
-export function updateAccessToken(): void {
+const updateAccessToken = (userManager: UserManager) => {
   userManager.getUser().then((user: User | null) => {
     if (user) {
       // usersCurrentStoredToken = user.access_token;
@@ -52,8 +51,35 @@ export function updateAccessToken(): void {
       // store.dispatch(noTokenAction);
     }
   });
-}
+};
 
-// export let usersCurrentStoredToken: string;
+const createManager = () => {
+  const localUserManager = createUserManager(userManagerConfig);
+
+  localUserManager.events.addUserSignedOut(() => {
+    console.log("addUserSignedOut");
+  });
+
+  localUserManager.events.addSilentRenewError((error) => {
+    console.error("Error while renewing the access token", error);
+  });
+
+  localUserManager.events.addAccessTokenExpiring((event: any) => {
+    console.log("Access Token Expiring");
+  });
+
+  localUserManager.events.addAccessTokenExpired((event: any) => {
+    console.error("Access Token Expired");
+  });
+
+  localUserManager.events.addUserLoaded((event: any) => {
+    console.log("User loaded / Silent refresh completed");
+    updateAccessToken(localUserManager);
+  });
+
+  return localUserManager;
+};
+
+export const userManager: UserManager = createManager();
 
 export default userManager;

@@ -25,6 +25,22 @@ export function getHeaderWithAuthorization(): Promise<Headers> {
 // }
 
 export function genericGet<TResult>(url: string): Promise<TResult> {
+  return fetch(url)
+    .then((response: Response) => {
+      if (response.status === 404 || response.status === 401) {
+        // NotFound was returned from C# so handle null object in your calling function
+        // return null;
+      }
+      const result = response.json();
+      return result;
+    })
+    .then((data: TResult) => {
+      return data;
+    });
+}
+
+export function genericGetAuth<TResult>(url: string): Promise<TResult> {
+  debugger;
   return getHeaderWithAuthorization().then((headers: Headers) => {
     return fetch(url, {
       headers,

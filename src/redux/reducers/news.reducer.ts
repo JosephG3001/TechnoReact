@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { AppDispatch, AppState } from "../..";
 import { loadNewsFromApi } from "../../api/news-service";
 import NewsEntity from "../../classes/news-entity";
+import { showErrorToast } from "../../tools/toast";
+import { AppDispatch, AppState } from "../store";
 
 export enum ENewsState {
   Idle,
@@ -44,10 +45,15 @@ export const selectNews = (state: AppState) => state.news.news;
 export const selectNewsState = (state: AppState) => state.news.currentState;
 
 export const loadNews = () => (dispatch: AppDispatch) => {
-  dispatch(loadingNews);
-  return loadNewsFromApi().then((result: NewsEntity[]) => {
-    if (result) {
-      dispatch(loadedNews(result));
-    }
-  });
+  dispatch(loadingNews());
+  return loadNewsFromApi()
+    .then((result: NewsEntity[]) => {
+      if (result) {
+        dispatch(loadedNews(result));
+      }
+    })
+    .catch((error: string) => {
+      showErrorToast(error);
+      dispatch(loadNewsFailed());
+    });
 };

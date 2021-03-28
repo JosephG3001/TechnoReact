@@ -2,8 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { UserState } from "redux-oidc";
-import { AppState } from "../..";
 import { loadSections } from "../../redux/reducers/sections.reducer";
+import { AppState } from "../../redux/store";
 import SidebarItems from "./sidebar-items";
 import "./sidebar.scss";
 

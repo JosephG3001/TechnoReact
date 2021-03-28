@@ -1,4 +1,3 @@
-import { store as technoStore } from "..";
 import { loadArticlesFromApi } from "../api/article-service";
 import ArticleEntity from "../classes/article-entity";
 import Section from "../classes/section";
@@ -10,6 +9,7 @@ import {
   setCurrentSubSection,
   setCurrentTech,
 } from "../redux/reducers/sections.reducer";
+import { store as technoStore } from "../redux/store";
 
 function getTechFromURL(): Section | null {
   const params = window.location.href.split("/");

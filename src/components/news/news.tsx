@@ -20,6 +20,13 @@ export const News: React.FC = () => {
 
   return (
     <div>
+      {newsState === ENewsState.Failed && (
+        <div className="error-container">
+          <i className="fas fa-exclamation-triangle" />
+          <div>Failed to load news</div>
+        </div>
+      )}
+
       {newsState === ENewsState.Loading && (
         <div className="loading-spinner-container">
           <CircularProgress className="mat-spinner" />

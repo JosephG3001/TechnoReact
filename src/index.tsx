@@ -2,9 +2,11 @@ import { ConnectedRouter } from "connected-react-router";
 import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
+import { OidcProvider } from "redux-oidc";
 import App from "./App";
 import "./index.css";
 import { history, store } from "./redux/store";
+import userManager from "./redux/userManager";
 import * as serviceWorker from "./serviceWorker";
 
 // eslint-disable-next-line import/prefer-default-export
@@ -13,9 +15,11 @@ import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
   <Provider store={store}>
-    <ConnectedRouter history={history}>
-      <App />
-    </ConnectedRouter>
+    <OidcProvider userManager={userManager} store={store}>
+      <ConnectedRouter history={history}>
+        <App />
+      </ConnectedRouter>
+    </OidcProvider>
   </Provider>,
   document.getElementById("root")
 );
