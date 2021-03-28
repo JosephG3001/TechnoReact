@@ -3,6 +3,7 @@ import { CircularProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
+import styled from "styled-components";
 import ArticleEntity from "../../classes/article-entity";
 import {
   EArticlesState,
@@ -13,9 +14,31 @@ import {
   getArticleFromUrl,
   tryStoreCurrentTechAndSubsection,
 } from "../../tools/url-helper";
-import "./article.scss";
 
 declare let SyntaxHighlighter: any;
+
+const StyledArticle = styled.div`
+  .error,
+  .loading-spinner-container {
+    padding-top: 20px;
+  }
+
+  .article {
+    max-width: 900px;
+    margin: 0px auto;
+    padding-top: 20px;
+
+    .article-content {
+      margin-left: 15px;
+      margin-right: 15px;
+      margin-bottom: 15px;
+      padding: 15px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px,
+        rgba(0, 0, 0, 0.12) 0px 0px 2px;
+      color: ${({ theme }) => theme.pallet.foregroundColour1};
+    }
+  }
+`;
 
 const Article: React.FC = () => {
   const sectionsState = useSelector(selectSectionsState);
@@ -53,7 +76,7 @@ const Article: React.FC = () => {
   }, [params, article, sectionsState, articlesState]);
 
   return (
-    <>
+    <StyledArticle>
       {articlesState === EArticlesState.Loaded && article && (
         <div className="article">
           <div
@@ -69,7 +92,7 @@ const Article: React.FC = () => {
           <div>Loading article...</div>
         </div>
       )}
-    </>
+    </StyledArticle>
   );
 };
 

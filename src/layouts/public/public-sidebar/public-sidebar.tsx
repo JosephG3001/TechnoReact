@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import withSidebar from "../../../hocs/withSidebar/withSidebasr";
+import withSidebar from "../../../hocs/withSidebar/withSidebar";
 import { loadSections } from "../../../redux/reducers/sections.reducer";
-import SidebarItems from "./public-sidebar-items";
-import "./public-sidebar.scss";
+import PublicSidebarItems from "./public-sidebar-items";
 
 export const PublicSidebar: React.FC = () => {
   const dispatch = useDispatch();
@@ -12,7 +11,7 @@ export const PublicSidebar: React.FC = () => {
     dispatch(loadSections());
   }, [dispatch]);
 
-  return <SidebarItems />;
+  return <PublicSidebarItems />;
 };
 
 export default withSidebar(PublicSidebar);

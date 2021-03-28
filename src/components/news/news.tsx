@@ -1,13 +1,59 @@
 import { CircularProgress } from "@material-ui/core";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import styled from "styled-components";
 import {
   ENewsState,
   loadNews,
   selectNews,
   selectNewsState,
 } from "../../redux/reducers/news.reducer";
-import "./news.scss";
+
+const StyledNews = styled.div`
+  .loading-spinner-container {
+    color: ${({ theme }) => theme.pallet.foregroundColour1};
+  }
+
+  .error-container {
+    text-align: center;
+    color: ${({ theme }) => theme.pallet.foregroundColour1};
+
+    .fas {
+      font-size: 5em;
+      color: ${({ theme }) => theme.pallet.themeColour2};
+      margin: 15px;
+    }
+  }
+
+  .news {
+    padding-left: 15px;
+    padding-right: 15px;
+
+    .news-item {
+      max-width: 900px;
+      margin: 15px auto;
+      padding: 15px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px,
+        rgba(0, 0, 0, 0.12) 0px 0px 2px;
+      background-color: ${({ theme }) => theme.pallet.bodyBackground1};
+      color: ${({ theme }) => theme.pallet.panelBackgroundColorAlt};
+
+      .news-header {
+        display: flex;
+        justify-content: space-between;
+
+        :last-child {
+          margin-left: auto;
+        }
+
+        h3 {
+          margin: 0;
+          color: ${({ theme }) => theme.pallet.themeColour1};
+        }
+      }
+    }
+  }
+`;
 
 export const News: React.FC = () => {
   const news = useSelector(selectNews);
@@ -19,7 +65,7 @@ export const News: React.FC = () => {
   }, [dispatch]);
 
   return (
-    <div>
+    <StyledNews>
       {newsState === ENewsState.Failed && (
         <div className="error-container">
           <i className="fas fa-exclamation-triangle" />
@@ -47,7 +93,7 @@ export const News: React.FC = () => {
           ))}
         </div>
       )}
-    </div>
+    </StyledNews>
   );
 };
 

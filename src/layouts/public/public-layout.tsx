@@ -7,13 +7,13 @@ import Content from "../../components/cms/content";
 import LandingPage from "../../components/landing-page/landing-page";
 import LoginPage from "../../components/login-page";
 import TopNav from "../../components/top-nav/top-nav";
-import Sidebar from "./public-sidebar/public-sidebar";
+import PublicSidebar from "./public-sidebar/public-sidebar";
 
 export const PublicLayout: React.FC = () => {
   return (
     <>
       <TopNav />
-      <Sidebar />
+      <PublicSidebar />
       <header className="App-header" />
       <div className="router-outlet">
         <Switch>
