@@ -3,11 +3,11 @@ import { User } from "oidc-client";
 import React, { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import Content from "../components/cms/content";
-import Sidebar from "../components/sidebar/sidebar";
-import TopNav from "../components/top-nav/top-nav";
-import { AppState } from "../redux/store";
-import userManager from "../redux/userManager";
+import Content from "../../components/cms/content";
+import TopNav from "../../components/top-nav/top-nav";
+import { AppState } from "../../redux/store";
+import userManager from "../../redux/userManager";
+import CMSSidebar from "./cms-sidebar/cms-sidebar";
 
 const CMSLayout: FC = () => {
   const dispatch = useDispatch();
@@ -24,7 +24,6 @@ const CMSLayout: FC = () => {
             path: window.location.pathname,
           },
         });
-        // dispatch(push("/login"));
       } else {
         userManager.signinSilent().catch((error: Error) => {
           if (error.message.indexOf("login_required") !== -1) {
@@ -44,7 +43,7 @@ const CMSLayout: FC = () => {
       {loggedIn ? (
         <div className="App">
           <TopNav />
-          <Sidebar />
+          <CMSSidebar />
           <header className="App-header" />
           <div className="router-outlet">
             <Switch>

@@ -1,12 +1,12 @@
 @import '../../App.scss';
 
 .loading-spinner-container {
-    color: white;
+    color: $foreground-colour1;
 }
 
 .error-container {
     text-align: center;
-    color: white;
+    color: $foreground-colour1;
 
     .fas {
         font-size: 5em;

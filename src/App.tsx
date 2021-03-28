@@ -5,8 +5,8 @@ import callbackPage from "./components/callback-page";
 import ErrorPage from "./components/error-page/error-page";
 import My404Page from "./components/not-found/my-404-page";
 import SilentRenewPage from "./components/silent-renew-page";
-import CMSLayout from "./layouts/cms-layout";
-import PublicLayout from "./layouts/public-layout";
+import CMSLayout from "./layouts/cms/cms-layout";
+import PublicLayout from "./layouts/public/public-layout";
 
 const App: FC = () => {
   return (

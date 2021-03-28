@@ -2,14 +2,14 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Section from "../../classes/section";
-import slidetoggle from "../../tools/collapse";
+import Section from "../../../classes/section";
+import slidetoggle from "../../../tools/collapse";
 
 export interface ISidebarItemProps {
   section: Section;
 }
 
-export const SidebarItem: React.FC<ISidebarItemProps> = ({ section }) => {
+export const PublicSidebarItem: React.FC<ISidebarItemProps> = ({ section }) => {
   const subMenuRef = React.useRef<HTMLDivElement>(null);
   const [collapsed, setCollapsed] = useState(true);
 
@@ -23,6 +23,7 @@ export const SidebarItem: React.FC<ISidebarItemProps> = ({ section }) => {
       <div role="button" className="section-parent" onClick={toggleSubMenu}>
         {section.inverseParentSection.length === 0 ? (
           <Link
+            className="sidebar-link"
             to={{
               pathname: `/articles/${encodeURIComponent(
                 section.parentSectionName
@@ -33,7 +34,7 @@ export const SidebarItem: React.FC<ISidebarItemProps> = ({ section }) => {
             <span className="section-text">{section.sectionName}</span>
           </Link>
         ) : (
-          <div className="sidebar-link">
+          <div className="sidebar-link parent">
             <span className="section-text">{section.sectionName}</span>
             <i
               className={`noselect material-icons rotate ${
@@ -51,11 +52,11 @@ export const SidebarItem: React.FC<ISidebarItemProps> = ({ section }) => {
         style={{ height: "0px" }}
       >
         {section.inverseParentSection.map((s: Section) => (
-          <SidebarItem key={s.sectionId} section={s} />
+          <PublicSidebarItem key={s.sectionId} section={s} />
         ))}
       </div>
     </>
   );
 };
 
-export default SidebarItem;
+export default PublicSidebarItem;

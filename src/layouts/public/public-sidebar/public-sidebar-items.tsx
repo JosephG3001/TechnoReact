@@ -1,15 +1,15 @@
 import CircularProgress from "@material-ui/core/CircularProgress";
 import React from "react";
 import { shallowEqual, useSelector } from "react-redux";
-import Section from "../../classes/section";
+import Section from "../../../classes/section";
 import {
   ESectionsState,
   selectSections,
   selectSectionsState,
-} from "../../redux/reducers/sections.reducer";
-import SidebarItem from "./sidebar-item";
+} from "../../../redux/reducers/sections.reducer";
+import SidebarItem from "./public-sidebar-item";
 
-const SidebarItems: React.FC = () => {
+const PublicSidebarItems: React.FC = () => {
   const sectionsState = useSelector(selectSectionsState);
   const sections = useSelector(selectSections, shallowEqual);
 
@@ -40,4 +40,4 @@ const SidebarItems: React.FC = () => {
   );
 };
 
-export default SidebarItems;
+export default PublicSidebarItems;

@@ -50,7 +50,7 @@ $spinner-size: 100px;
 
         &:hover {
             background-color: $colour1;
-            color: white;
+            color: $foreground-colour1;
         }
     }
 }

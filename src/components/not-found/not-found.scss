@@ -1,3 +1,4 @@
+@import '../../App.scss';
 
 .center {
   display: flex;
@@ -6,7 +7,7 @@
   align-items: center;
   text-align: center;
   min-height: 100vh;
-  color: white;
+  color: $foreground-colour1;
 
   .fas {
     font-size: 4em;

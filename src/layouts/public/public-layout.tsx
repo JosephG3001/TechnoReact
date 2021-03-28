@@ -1,13 +1,13 @@
 import React from "react";
 import { Redirect, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Article from "../components/article/article";
-import Articles from "../components/article/articles";
-import Content from "../components/cms/content";
-import LandingPage from "../components/landing-page/landing-page";
-import LoginPage from "../components/login-page";
-import Sidebar from "../components/sidebar/sidebar";
-import TopNav from "../components/top-nav/top-nav";
+import Article from "../../components/article/article";
+import Articles from "../../components/article/articles";
+import Content from "../../components/cms/content";
+import LandingPage from "../../components/landing-page/landing-page";
+import LoginPage from "../../components/login-page";
+import TopNav from "../../components/top-nav/top-nav";
+import Sidebar from "./public-sidebar/public-sidebar";
 
 export const PublicLayout: React.FC = () => {
   return (
