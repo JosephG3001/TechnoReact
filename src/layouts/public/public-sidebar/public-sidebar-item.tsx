@@ -1,10 +1,10 @@
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useState } from "react";
+import AnimateHeight from "react-animate-height";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import Section from "../../../classes/section";
-import slidetoggle from "../../../tools/collapse";
 
 const StyledPublicSidebarItem = styled.div`
   .section-parent {
@@ -62,11 +62,9 @@ export interface ISidebarItemProps {
 }
 
 export const PublicSidebarItem: React.FC<ISidebarItemProps> = ({ section }) => {
-  const subMenuRef = React.useRef<HTMLDivElement>(null);
   const [collapsed, setCollapsed] = useState(true);
 
   const toggleSubMenu = () => {
-    slidetoggle(subMenuRef.current);
     setCollapsed(!collapsed);
   };
 
@@ -98,15 +96,14 @@ export const PublicSidebarItem: React.FC<ISidebarItemProps> = ({ section }) => {
           </div>
         )}
       </div>
-      <div
-        className="section-children collapse"
-        ref={subMenuRef}
-        style={{ height: "0px" }}
+      <AnimateHeight
+        className="section-children"
+        height={collapsed ? 0 : "auto"}
       >
         {section.inverseParentSection.map((s: Section) => (
           <PublicSidebarItem key={s.sectionId} section={s} />
         ))}
-      </div>
+      </AnimateHeight>
     </StyledPublicSidebarItem>
   );
 };

@@ -1,3 +1,5 @@
+import ArticleListItem from "./article-list-item";
+
 export default class Section {
   sectionId: string;
 
@@ -12,4 +14,6 @@ export default class Section {
   displayOrder: number;
 
   icon: string;
+
+  articleList: Array<ArticleListItem>;
 }

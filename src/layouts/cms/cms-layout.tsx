@@ -1,9 +1,9 @@
-import { CircularProgress } from "@material-ui/core";
 import { User } from "oidc-client";
 import React, { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
-import Content from "../../components/cms/content";
+import ContentExplorer from "../../components/cms/content-explorer";
+import LoadingSpinner from "../../components/loading-spinner";
 import TopNav from "../../components/top-nav/top-nav";
 import { AppState } from "../../redux/store";
 import userManager from "../../redux/userManager";
@@ -47,16 +47,13 @@ const CMSLayout: FC = () => {
           <header className="App-header" />
           <div className="router-outlet">
             <Switch>
-              <Route exact path="/cms/content" component={Content} />
+              <Route exact path="/cms/content" component={ContentExplorer} />
               <Redirect from="/cms" to="/cms/content" />
             </Switch>
           </div>
         </div>
       ) : (
-        <div className="loading-spinner-container">
-          <CircularProgress className="mat-spinner" />
-          <div>Redirecting...</div>
-        </div>
+        <LoadingSpinner labelText="Redirecting..." />
       )}
     </>
   );

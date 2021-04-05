@@ -11,7 +11,14 @@ import {
 
 const StyledNews = styled.div`
   .loading-spinner-container {
+    text-align: center;
     color: ${({ theme }) => theme.pallet.foregroundColour1};
+
+    .mat-spinner {
+      width: ${({ theme }) => theme.metrics.spinnerSize} !important;
+      height: ${({ theme }) => theme.metrics.spinnerSize} !important;
+      color: ${({ theme }) => theme.pallet.themeColour1} !important;
+    }
   }
 
   .error-container {

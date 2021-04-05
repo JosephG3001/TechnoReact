@@ -46,6 +46,7 @@ const slice = createSlice({
   },
 });
 
+// Reducer
 export const sectionsReducer = slice.reducer;
 export const {
   loadingSections,
@@ -55,14 +56,35 @@ export const {
   setCurrentSubSection,
 } = slice.actions;
 
+// Selectors
 export const selectCurrentTech = (state: AppState) =>
   state.sections.currentTech;
+
 export const selectCurrentSubSection = (state: AppState) =>
   state.sections.currentSubSection;
+
 export const selectSections = (state: AppState) => state.sections.menuItems;
+
 export const selectSectionsState = (state: AppState) =>
   state.sections.currentState;
 
+const getSectionChildren = (section: Section): Array<Section> => {
+  const menuItems: Section[] = [];
+  section.inverseParentSection.forEach((child) => {
+    menuItems.push(...getSectionChildren(child));
+  });
+  return menuItems;
+};
+
+export const selectSectionsList = (state: AppState) => {
+  const { menuItems } = state.sections;
+  menuItems.forEach((section) => {
+    menuItems.push(...getSectionChildren(section));
+  });
+  return menuItems;
+};
+
+// thunks
 export const loadSections = () => (dispatch: AppDispatch) => {
   dispatch(loadingSections());
   return loadSectionsFromApi()

@@ -1,9 +1,8 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import withSidebar from "../../../hocs/withSidebar/withSidebar";
-import { loadSections } from "../../../redux/reducers/sections.reducer";
 import {
   selectUser,
   selectUserInitials,
@@ -59,41 +58,35 @@ const StyledCMSSidebar = styled.div`
       display: flex;
       align-items: center;
       background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour3};
+    }
+  }
 
-      a,
-      .sidebar-link {
-        display: block;
-        display: flex;
-        padding: 12px 15px;
-        width: 100%;
-        font-size: 0.9em;
+  a,
+  .sidebar-link {
+    display: block;
+    display: flex;
+    align-items: center;
+    padding: 12px 15px;
+    width: 100%;
+    font-size: 0.9em;
 
-        &.parent {
-          background-color: ${({ theme }) =>
-            theme.pallet.sidebarBackgroundColour2};
-        }
-      }
+    &.parent {
+      background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour2};
+    }
 
-      &:hover {
-        background-color: $colour1;
+    &:hover {
+      background-color: ${({ theme }) => theme.pallet.themeColour1};
 
-        .section-icon {
-          color: ${({ theme }) => theme.pallet.foregroundColour1} !important;
-        }
+      .section-icon {
+        color: ${({ theme }) => theme.pallet.foregroundColour1} !important;
       }
     }
   }
 `;
 
 const CMSSidebar: React.FC = () => {
-  const dispatch = useDispatch();
-
   const userInitials = useSelector(selectUserInitials);
   const user = useSelector(selectUser);
-
-  useEffect(() => {
-    dispatch(loadSections());
-  }, [dispatch]);
 
   return (
     <StyledCMSSidebar>
@@ -115,8 +108,13 @@ const CMSSidebar: React.FC = () => {
           pathname: `/cms/content`,
         }}
       >
-        <i className="material-icons section-icon">data_usage</i>
+        <i className="material-icons section-icon">article</i>
         <span className="section-text">Content</span>
+      </Link>
+
+      <Link className="sidebar-link" to={{ pathname: `/cms/news` }}>
+        <i className="material-icons section-icon">list</i>
+        <span className="section-text">News</span>
       </Link>
     </StyledCMSSidebar>
   );

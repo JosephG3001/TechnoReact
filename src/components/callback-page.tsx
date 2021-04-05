@@ -1,4 +1,3 @@
-import { CircularProgress } from "@material-ui/core";
 import { User } from "oidc-client";
 import React from "react";
 import { connect, useDispatch } from "react-redux";
@@ -6,6 +5,7 @@ import { useHistory } from "react-router";
 import { CallbackComponent } from "redux-oidc";
 import { setError } from "../redux/reducers/error.reducer";
 import userManager from "../redux/userManager";
+import LoadingSpinner from "./loading-spinner";
 
 const CallbackPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -52,10 +52,7 @@ const CallbackPage: React.FC = () => {
       successCallback={onSuccess}
       errorCallback={onError}
     >
-      <div className="loading-spinner-container">
-        <CircularProgress className="mat-spinner" />
-        <div>Signing in...</div>
-      </div>
+      <LoadingSpinner labelText="Signing in..." />
     </CallbackComponent>
   );
 };

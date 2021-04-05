@@ -19,11 +19,6 @@ export const Default = css`
     margin-left: ${({ theme }) => theme.metrics.sidebarWidth};
     padding-top: ${({ theme }) => theme.metrics.topNavHeight};
   }
-
-  .collapse {
-    overflow: hidden;
-    transition: 0.3s ease-in-out;
-  }
 `;
 
 export const DefaultStyle = createGlobalStyle`
