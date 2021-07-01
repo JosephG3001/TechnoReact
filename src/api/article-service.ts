@@ -5,7 +5,7 @@ import { showErrorToast } from "../tools/toast";
 export const loadArticlesFromApi = (
   subSectionId: string
 ): Promise<ArticleEntity[]> => {
-  return fetch(`${Global.contentUrl}/api/articles?id=${subSectionId}`)
+  return fetch(`${Global.contentUrl}/api/articles?sectionId=${subSectionId}`)
     .then((result) => result.json())
     .then((result: ArticleEntity[]) => {
       return result.filter((a) => a.visible);

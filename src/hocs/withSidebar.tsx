@@ -9,13 +9,14 @@ const StyledWithSidebar = styled.div`
     width: ${({ theme }) => theme.metrics.sidebarWidth};
     min-height: 100%;
     max-height: 100%;
-    background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour1};
+    background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour};
     color: ${({ theme }) => theme.pallet.sidebarForegroundColour1};
     overflow-y: auto;
     overflow-x: hidden;
 
     .sidebar-header {
-      background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour2};
+      background-color: ${({ theme }) =>
+        theme.pallet.sidebarHeaderBackgroundColour1};
       height: ${({ theme }) => theme.metrics.topNavHeight};
       text-align: center;
       display: flex;
@@ -26,7 +27,8 @@ const StyledWithSidebar = styled.div`
 
     .sidebar-footer {
       overflow-x: hidden;
-      background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour2};
+      background-color: ${({ theme }) =>
+        theme.pallet.sidebarHeaderBackgroundColour1};
       text-align: center;
       bottom: 0;
       position: fixed;
@@ -41,7 +43,7 @@ const StyledWithSidebar = styled.div`
         margin: 10px;
 
         .sidebar-footer-title {
-          color: ${({ theme }) => theme.pallet.themeColour2};
+          color: ${({ theme }) => theme.pallet.sidebarForegroundColour1};
         }
       }
     }

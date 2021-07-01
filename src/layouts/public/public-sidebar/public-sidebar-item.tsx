@@ -11,7 +11,8 @@ const StyledPublicSidebarItem = styled.div`
     cursor: pointer;
     display: flex;
     align-items: center;
-    background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour3};
+    background-color: ${({ theme }) =>
+      theme.pallet.sidebarButtonBackgroundColour};
 
     a,
     .sidebar-link {
@@ -30,7 +31,11 @@ const StyledPublicSidebarItem = styled.div`
     .section-icon {
       font-size: 16px;
       margin: 0 5px;
-      color: ${({ theme }) => theme.pallet.themeColour1};
+      color: ${({ theme }) => theme.pallet.themeColour2};
+    }
+
+    .rotate-icon {
+      color: ${({ theme }) => theme.pallet.themeColour2} !important;
     }
 
     .rotate {
@@ -49,11 +54,16 @@ const StyledPublicSidebarItem = styled.div`
       .section-icon {
         color: ${({ theme }) => theme.pallet.foregroundColour1} !important;
       }
+
+      .rotate-icon {
+        color: ${({ theme }) => theme.pallet.foregroundColour1} !important;
+      }
     }
   }
 
   .section-children {
-    background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour2};
+    background-color: ${({ theme }) =>
+      theme.pallet.sidebarButtonBackgroundColour};
   }
 `;
 
@@ -87,7 +97,7 @@ export const PublicSidebarItem: React.FC<ISidebarItemProps> = ({ section }) => {
           <div className="sidebar-link parent">
             <span className="section-text">{section.sectionName}</span>
             <i
-              className={`noselect material-icons rotate ${
+              className={`noselect material-icons rotate-icon rotate ${
                 !collapsed ? "deg90" : ""
               }`}
             >

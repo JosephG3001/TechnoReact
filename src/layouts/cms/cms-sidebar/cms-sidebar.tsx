@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import withSidebar from "../../../hocs/withSidebar/withSidebar";
+import withSidebar from "../../../hocs/withSidebar";
 import {
   selectUser,
   selectUserInitials,
@@ -15,7 +15,7 @@ const StyledCMSSidebar = styled.div`
     padding-bottom: 27px;
 
     .user-initials {
-      background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour2};
+      background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour};
       color: ${({ theme }) => theme.pallet.themeColour2};
       border-radius: 50px;
       width: 70px;
@@ -40,7 +40,8 @@ const StyledCMSSidebar = styled.div`
     padding: 12px 15px;
     width: 100%;
     font-size: 0.9em;
-    background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour2};
+    background-color: ${({ theme }) =>
+      theme.pallet.sidebarButtonBackgroundColour};
 
     .section-icon {
       font-size: 16px;
@@ -57,7 +58,8 @@ const StyledCMSSidebar = styled.div`
       cursor: pointer;
       display: flex;
       align-items: center;
-      background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour3};
+      background-color: ${({ theme }) =>
+        theme.pallet.sidebarButtonBackgroundColour};
     }
   }
 
@@ -69,13 +71,16 @@ const StyledCMSSidebar = styled.div`
     padding: 12px 15px;
     width: 100%;
     font-size: 0.9em;
+    transition: all 0.1s linear;
 
     &.parent {
-      background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour2};
+      background-color: ${({ theme }) =>
+        theme.pallet.sidebarButtonBackgroundColour};
     }
 
     &:hover {
-      background-color: ${({ theme }) => theme.pallet.themeColour1};
+      background-color: ${({ theme }) =>
+        theme.pallet.sidebarButtonHoverBackgroundColour};
 
       .section-icon {
         color: ${({ theme }) => theme.pallet.foregroundColour1} !important;

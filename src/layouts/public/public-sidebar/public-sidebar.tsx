@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import withSidebar from "../../../hocs/withSidebar/withSidebar";
+import withSidebar from "../../../hocs/withSidebar";
 import { loadSections } from "../../../redux/reducers/sections.reducer";
 import PublicSidebarItems from "./public-sidebar-items";
 

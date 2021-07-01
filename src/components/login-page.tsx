@@ -1,9 +1,9 @@
-import { CircularProgress } from "@material-ui/core";
 import React from "react";
 import { useSelector } from "react-redux";
 import { UserState } from "redux-oidc";
 import { AppState } from "../redux/store";
 import userManager from "../redux/userManager";
+import LoadingPage from "./loading-page";
 
 const LoginPage: React.FC = () => {
   const oidcState: UserState = useSelector<AppState, UserState>(
@@ -22,12 +22,7 @@ const LoginPage: React.FC = () => {
     login();
   }
 
-  return (
-    <div className="loading-spinner-container">
-      <CircularProgress className="mat-spinner" />
-      <div>Redirecting to login...</div>
-    </div>
-  );
+  return <LoadingPage labelText="Redirecting to login..." />;
 };
 
 export default LoginPage;

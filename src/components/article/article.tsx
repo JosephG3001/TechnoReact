@@ -24,14 +24,15 @@ const StyledArticle = styled.div`
   }
 
   .article {
-    max-width: 900px;
-    margin: 0px auto;
+    margin: auto;
     padding-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
 
     .article-content {
-      margin-left: 15px;
-      margin-right: 15px;
-      margin-bottom: 15px;
+      margin: auto;
+      max-width: 900px;
+      background-color: ${({ theme }) => theme.pallet.articleBackgroundColour};
       padding: 15px;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px,
         rgba(0, 0, 0, 0.12) 0px 0px 2px;
@@ -79,10 +80,9 @@ const Article: React.FC = () => {
     <StyledArticle>
       {articlesState === EArticlesState.Loaded && article && (
         <div className="article">
-          <div
-            className="article-content"
-            dangerouslySetInnerHTML={{ __html: article.articleHtml }}
-          />
+          <div className="article-content">
+            <div dangerouslySetInnerHTML={{ __html: article.articleHtml }} />
+          </div>
         </div>
       )}
 

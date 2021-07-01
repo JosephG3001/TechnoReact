@@ -5,7 +5,7 @@ import { useHistory } from "react-router";
 import { CallbackComponent } from "redux-oidc";
 import { setError } from "../redux/reducers/error.reducer";
 import userManager from "../redux/userManager";
-import LoadingSpinner from "./loading-spinner";
+import LoadingPage from "./loading-page";
 
 const CallbackPage: React.FC = () => {
   const dispatch = useDispatch();
@@ -34,6 +34,7 @@ const CallbackPage: React.FC = () => {
   //     });
   // });
   const onSuccess = (user: User) => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { path } = user.state || {};
     history.push(path || "/cms/content");
   };
@@ -52,7 +53,7 @@ const CallbackPage: React.FC = () => {
       successCallback={onSuccess}
       errorCallback={onError}
     >
-      <LoadingSpinner labelText="Signing in..." />
+      <LoadingPage labelText="Signing in..." />
     </CallbackComponent>
   );
 };

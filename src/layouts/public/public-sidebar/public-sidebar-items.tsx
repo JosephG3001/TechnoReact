@@ -1,8 +1,9 @@
-import CircularProgress from "@material-ui/core/CircularProgress";
 import React from "react";
 import { shallowEqual, useSelector } from "react-redux";
 import styled from "styled-components";
 import Section from "../../../classes/section";
+import ErrorTriangle from "../../../components/error-triangle";
+import LoadingSpinner from "../../../components/loading-spinner";
 import {
   ESectionsState,
   selectSections,
@@ -15,26 +16,12 @@ const StyledSidebarItems = styled.div`
     padding-bottom: 65px;
     overflow-x: hidden;
 
-    .loading-spinner-container {
-      text-align: center;
-
-      .mat-spinner,
-      .fas {
-        width: ${({ theme }) => theme.metrics.spinnerSize} !important;
-        height: ${({ theme }) => theme.metrics.spinnerSize} !important;
-        color: ${({ theme }) => theme.pallet.themeColour1} !important;
-      }
-
-      .fas {
-        font-size: 5em;
-      }
-    }
-
     .section-parent {
       cursor: pointer;
       display: flex;
       align-items: center;
-      background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour3};
+      background-color: ${({ theme }) =>
+        theme.pallet.sidebarButtonBackgroundColour};
 
       a,
       .sidebar-link {
@@ -44,18 +31,30 @@ const StyledSidebarItems = styled.div`
         width: 100%;
         font-size: 0.9em;
         text-decoration: none;
+        transition: all 0.1s linear;
+
+        &:hover {
+          background-color: ${({ theme }) =>
+            theme.pallet.sidebarButtonHoverBackgroundColour};
+
+          .section-icon {
+            color: ${({ theme }) => theme.pallet.foregroundColour1} !important;
+          }
+        }
 
         &.parent {
           background-color: ${({ theme }) =>
             theme.pallet.sidebarBackgroundColour2};
-        }
-      }
 
-      &:hover {
-        background-color: ${({ theme }) => theme.pallet.themeColour1};
+          &:hover {
+            background-color: ${({ theme }) =>
+              theme.pallet.sidebarButtonHoverBackgroundColour};
 
-        .section-icon {
-          color: ${({ theme }) => theme.pallet.foregroundColour1} !important;
+            .section-icon {
+              color: ${({ theme }) =>
+                theme.pallet.foregroundColour1} !important;
+            }
+          }
         }
       }
     }
@@ -70,17 +69,11 @@ const PublicSidebarItems: React.FC = () => {
     <StyledSidebarItems>
       <div className="sidebar-items">
         {sectionsState === ESectionsState.loading && (
-          <div className="loading-spinner-container">
-            <CircularProgress className="mat-spinner" />
-            <div>Loading menu...</div>
-          </div>
+          <LoadingSpinner largeText={false} labelText="Loading menu..." />
         )}
 
         {sectionsState === ESectionsState.Failed && (
-          <div className="loading-spinner-container">
-            <i className="fas fa-exclamation-triangle" />
-            <div>Failed to load menu</div>
-          </div>
+          <ErrorTriangle labelText="Failed to load menu" />
         )}
 
         {sectionsState === ESectionsState.loaded && (

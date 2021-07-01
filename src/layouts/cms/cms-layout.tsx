@@ -2,8 +2,9 @@ import { User } from "oidc-client";
 import React, { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
+import BackgroundImage from "../../components/backgroundImage";
 import ContentExplorer from "../../components/cms/content-explorer";
-import LoadingSpinner from "../../components/loading-spinner";
+import LoadingPage from "../../components/loading-page";
 import TopNav from "../../components/top-nav/top-nav";
 import { AppState } from "../../redux/store";
 import userManager from "../../redux/userManager";
@@ -42,10 +43,11 @@ const CMSLayout: FC = () => {
     <>
       {loggedIn ? (
         <div className="App">
+          <BackgroundImage />
           <TopNav />
           <CMSSidebar />
           <header className="App-header" />
-          <div className="router-outlet">
+          <div className="root-content">
             <Switch>
               <Route exact path="/cms/content" component={ContentExplorer} />
               <Redirect from="/cms" to="/cms/content" />
@@ -53,7 +55,7 @@ const CMSLayout: FC = () => {
           </div>
         </div>
       ) : (
-        <LoadingSpinner labelText="Redirecting..." />
+        <LoadingPage labelText="Redirecting to login..." />
       )}
     </>
   );

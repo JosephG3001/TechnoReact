@@ -1,22 +1,45 @@
+const globalThemeColour1 = "#5F901C";
+const globalThemeColour2 = "#89cf29";
+const globalThemeColour3 = "#395610";
+const globalGlassColour1 = "rgba(0,0,0,0.5)";
+const globalGlassColour2 = "rgba(0,0,0,0.9)";
+
 export const theme = {
   pallet: {
-    bodyBackground1: "#263942",
-    bodyBackground2: "#132229",
+    bodyBackground1: "#222",
+    bodyBackground2: "#333",
     foregroundColour1: "#fff",
+    errorTextColour: "#eee",
 
-    sidebarBackgroundColour1: "#2b3b44",
-    sidebarBackgroundColour2: "#132229",
-    sidebarBackgroundColour3: "#162a33",
+    sidebarBackgroundColour: globalGlassColour1,
+    sidebarBackgroundColour2: globalGlassColour1,
     sidebarForegroundColour1: "#fff",
-    sidebarForegroundColour2: "#aaa",
+    sidebarForegroundColour2: "#ccc",
+    sidebarHeaderBackgroundColour1: globalThemeColour1,
+    sidebarButtonBackgroundColour: "rgba(0,0,0,0.2)",
+    sidebarButtonHoverBackgroundColour: globalThemeColour1,
 
-    navbarBackgroundColour: "#233239",
+    articleJumbotronBackgroundColour1: globalGlassColour1,
+    articleRowBackgroundcolour: globalGlassColour1,
+    articleRowHoverBackgroundcolour: globalThemeColour1,
+    newsRowBackgroundcolour: globalGlassColour1,
+
+    articleBackgroundColour: globalGlassColour1,
+    glassBackgroundColour: "rgba(0,0,0,0.5)",
+
+    navbarBackgroundColour: globalGlassColour1,
     navbarForegroundColour: "#fff",
-    navbarItemHoverColour: "#007cc4",
-    navbarItemHoverBackgroundColour: "#0096c4",
+    navbarItemHoverColour: globalThemeColour1,
+    navbarItemHoverBackgroundColour: globalThemeColour1,
 
-    themeColour1: "#1485b9",
-    themeColour2: "#008dc4",
+    themeColour1: globalThemeColour2,
+    themeColour2: globalThemeColour2,
+
+    buttonBackgroundColour: globalThemeColour1,
+    buttonBackgroundHoverColour: globalThemeColour3,
+
+    contextMenuBackgroundColour: globalGlassColour2,
+    contextMenuButtonHoverColour: globalThemeColour3,
 
     panelBackgroundColor: "#fff",
     panelBackgroundColorAlt: "#f5f5f5",

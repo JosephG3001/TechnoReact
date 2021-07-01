@@ -3,6 +3,7 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Article from "../../components/article/article";
 import Articles from "../../components/article/articles";
+import BackgroundImage from "../../components/backgroundImage";
 import Content from "../../components/cms/content-explorer";
 import LandingPage from "../../components/landing-page/landing-page";
 import LoginPage from "../../components/login-page";
@@ -12,10 +13,11 @@ import PublicSidebar from "./public-sidebar/public-sidebar";
 export const PublicLayout: React.FC = () => {
   return (
     <>
+      <BackgroundImage />
       <TopNav />
       <PublicSidebar />
       <header className="App-header" />
-      <div className="router-outlet">
+      <div className="root-content">
         <Switch>
           <Route
             exact

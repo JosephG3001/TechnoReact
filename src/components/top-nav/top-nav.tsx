@@ -12,7 +12,6 @@ const StyledTopNav = styled.div`
     display: flex;
     width: 100%;
     align-items: center;
-    box-shadow: 0 -2px 4px 2px ${({ theme }) => theme.pallet.navbarBackgroundColour};
     z-index: 9999;
 
     .top-nav-menu-items {
@@ -42,7 +41,13 @@ const StyledTopNav = styled.div`
 
           .top-nav-menu-item-icon {
             margin: 5px;
-            color: ${({ theme }) => theme.pallet.navbarForegroundColour};
+            color: ${({ theme }) => theme.pallet.themeColour2};
+          }
+
+          &:hover {
+            .top-nav-menu-item-icon {
+              color: ${({ theme }) => theme.pallet.navbarForegroundColour};
+            }
           }
 
           .top-nav-menu-item-text {
