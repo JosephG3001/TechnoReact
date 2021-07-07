@@ -86,7 +86,7 @@ export const PublicSidebarItem: React.FC<ISidebarItemProps> = ({ section }) => {
             className="sidebar-link"
             to={{
               pathname: `/articles/${encodeURIComponent(
-                section.parentSectionName
+                section.parentSectionName!
               )}/${encodeURIComponent(section.sectionName)}`,
             }}
           >

@@ -1,12 +1,22 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { useMemo, useState } from "react";
 import AnimateHeight from "react-animate-height";
 import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import ArticleListItem from "../../classes/article-list-item";
 import Section from "../../classes/section";
-import RenameModal from "./rename-modal";
+import {
+  createNewArticle,
+  loadArticle,
+} from "../../redux/reducers/article.reducer";
+import AddEditSectionModal, {
+  EMenuEntityType,
+  IAddEditModalProps,
+} from "./add-edit-section-modal";
+import DeleteSectionModal from "./delete-section-modal";
 
 const StyledMenuItem = styled.div`
   .link {
@@ -67,9 +77,15 @@ const StyledMenuItem = styled.div`
 `;
 
 const ArticleLink: React.FC<ArticleListItem> = ({ articleName, articleId }) => {
+  const dispatch = useDispatch();
+
   return (
     <>
-      <div className="link">
+      <div
+        className="link"
+        role="button"
+        onClick={() => dispatch(loadArticle(articleId))}
+      >
         <i className="material-icons article-link">insert_drive_file</i>
         <ContextMenuTrigger id={`ContextMenu_Article_${articleId}`}>
           <span>{articleName}</span>
@@ -96,8 +112,23 @@ enum NodeType {
 }
 
 const SectionMenuItem: React.FC<IMenuProps> = ({ section }) => {
+  const dispatch = useDispatch();
+
   const [collapsed, setCollapsed] = useState(true);
-  const [showRenameModal, setShowRenameModal] = useState(false);
+  const [showAddEditSectionModal, setShowAddEditSectionModal] = useState(false);
+  const [
+    addEditModalProps,
+    setAddEditModalProps,
+  ] = useState<IAddEditModalProps>({
+    entityType: EMenuEntityType.Tech,
+    recordId: "",
+    recordName: "",
+    parentSectionId: undefined,
+    closeModal: () => setShowAddEditSectionModal(false),
+  });
+
+  const [showDeleteSectionModal, setShowDeleteSectionModal] = useState(false);
+  const [sectionIdForDelete, setSectionIdForDelete] = useState("");
 
   const nodeType = useMemo(() => {
     if (section.sectionName === "Root") {
@@ -113,6 +144,27 @@ const SectionMenuItem: React.FC<IMenuProps> = ({ section }) => {
 
   const toggleSubMenu = () => {
     setCollapsed(!collapsed);
+  };
+
+  const setAddEditPropsAndOpenModal = (
+    entityType: EMenuEntityType,
+    recordId: string,
+    recordName: string,
+    parentSectionId?: string | undefined
+  ) => {
+    setAddEditModalProps({
+      entityType,
+      recordId,
+      recordName,
+      parentSectionId,
+      closeModal: () => setShowAddEditSectionModal(false),
+    });
+    setShowAddEditSectionModal(true);
+  };
+
+  const setDeleteSectionPropsAndOpenModal = (sectionId: string) => {
+    setSectionIdForDelete(sectionId);
+    setShowDeleteSectionModal(true);
   };
 
   return (
@@ -149,29 +201,97 @@ const SectionMenuItem: React.FC<IMenuProps> = ({ section }) => {
 
       {nodeType === NodeType.RootNode && (
         <ContextMenu id={`ContextMenu_${section.sectionId}`}>
-          <MenuItem onClick={() => setShowRenameModal(true)}>New Tech</MenuItem>
+          <MenuItem
+            onClick={() =>
+              setAddEditPropsAndOpenModal(
+                EMenuEntityType.Tech,
+                "",
+                "",
+                section.sectionId
+              )
+            }
+          >
+            New Tech
+          </MenuItem>
         </ContextMenu>
       )}
       {nodeType === NodeType.TechNode && (
         <ContextMenu id={`ContextMenu_${section.sectionId}`}>
-          <MenuItem>Rename Tech</MenuItem>
+          <MenuItem
+            onClick={() =>
+              setAddEditPropsAndOpenModal(
+                EMenuEntityType.Tech,
+                section.sectionId,
+                section.sectionName
+              )
+            }
+          >
+            Rename Tech
+          </MenuItem>
           <hr />
-          <MenuItem>New Section</MenuItem>
-          <MenuItem>Delete Tech</MenuItem>
+          <MenuItem
+            onClick={() =>
+              setAddEditPropsAndOpenModal(
+                EMenuEntityType.Subsection,
+                "",
+                "",
+                section.sectionId
+              )
+            }
+          >
+            New Section
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setDeleteSectionPropsAndOpenModal(section.sectionId);
+            }}
+          >
+            Delete Tech
+          </MenuItem>
         </ContextMenu>
       )}
       {nodeType === NodeType.SectionNode && (
         <ContextMenu id={`ContextMenu_${section.sectionId}`}>
-          <MenuItem>Rename Section</MenuItem>
+          <MenuItem
+            onClick={() =>
+              setAddEditPropsAndOpenModal(
+                EMenuEntityType.Subsection,
+                section.sectionId,
+                section.sectionName
+              )
+            }
+          >
+            Rename Section
+          </MenuItem>
           <hr />
-          <MenuItem>New Article</MenuItem>
-          <MenuItem>Delete Section</MenuItem>
+          <MenuItem
+            onClick={() => {
+              dispatch(createNewArticle(section.sectionId));
+            }}
+          >
+            New Article
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              setDeleteSectionPropsAndOpenModal(section.sectionId);
+            }}
+          >
+            Delete Section
+          </MenuItem>
         </ContextMenu>
       )}
 
-      <RenameModal
-        showModal={showRenameModal}
-        onClose={() => setShowRenameModal(false)}
+      <AddEditSectionModal
+        showModal={showAddEditSectionModal}
+        onClose={() => setShowAddEditSectionModal(false)}
+        {...addEditModalProps}
+      />
+
+      <DeleteSectionModal
+        closeModal={() => setShowDeleteSectionModal(false)}
+        sectionId={sectionIdForDelete}
+        showModal={showDeleteSectionModal}
+        onClose={() => setShowDeleteSectionModal(false)}
       />
     </StyledMenuItem>
   );

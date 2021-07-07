@@ -50,6 +50,12 @@ module.exports = {
     "react-hooks/exhaustive-deps": "error",
     "no-debugger": "warn",
     "no-shadow": "off",
+    "no-plusplus": [
+      2,
+      {
+        allowForLoopAfterthoughts: true,
+      },
+    ],
     "@typescript-eslint/no-shadow": ["error"],
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",

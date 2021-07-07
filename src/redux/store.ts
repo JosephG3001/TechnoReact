@@ -3,6 +3,7 @@ import { connectRouter, routerMiddleware } from "connected-react-router";
 import { createBrowserHistory, History } from "history";
 import { combineReducers } from "redux";
 import { loadUser, reducer as oidcReducer } from "redux-oidc";
+import { articleReducer } from "./reducers/article.reducer";
 import { articlesReducer } from "./reducers/articles.reducer";
 import { errorReducer } from "./reducers/error.reducer";
 import { newsReducer } from "./reducers/news.reducer";
@@ -16,6 +17,7 @@ export const history: History = createBrowserHistory();
 const rootReducer = combineReducers({
   sections: sectionsReducer,
   articles: articlesReducer,
+  article: articleReducer,
   news: newsReducer,
   router: connectRouter(history),
   oidcState: oidcReducer,

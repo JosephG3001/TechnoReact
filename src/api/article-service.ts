@@ -1,6 +1,7 @@
 import ArticleEntity from "../classes/article-entity";
 import { Global } from "../techno.config";
 import { showErrorToast } from "../tools/toast";
+import { genericGetAuth } from "./apiUtils";
 
 export const loadArticlesFromApi = (
   subSectionId: string
@@ -14,6 +15,14 @@ export const loadArticlesFromApi = (
       showErrorToast(error);
       return [];
     });
+};
+
+export const loadArticleFromApi = (
+  articleId: string
+): Promise<ArticleEntity> => {
+  return genericGetAuth<ArticleEntity>(
+    `${Global.contentUrl}/api/article?id=${articleId}`
+  );
 };
 
 export const saveArticle = () => {};

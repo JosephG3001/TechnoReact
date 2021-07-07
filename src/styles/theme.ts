@@ -41,8 +41,18 @@ export const theme = {
     contextMenuBackgroundColour: globalGlassColour2,
     contextMenuButtonHoverColour: globalThemeColour3,
 
+    modalBackgroundColour: "#333",
+    modalFontColour: "#eee",
+
     panelBackgroundColor: "#fff",
     panelBackgroundColorAlt: "#f5f5f5",
+
+    formControlBackgroundColour: "#333",
+    formControlTextColourColour: "#e5e5e5",
+    formControlBoxColour: "#fff",
+    formControlBoxSelectedColour: globalThemeColour1,
+    formControlSelectItemHoverColour: globalThemeColour3,
+    formControlSelectItemSelectedColour: globalThemeColour1,
   },
   metrics: {
     sidebarWidth: "250px",

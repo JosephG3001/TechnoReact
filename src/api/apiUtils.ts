@@ -1,4 +1,6 @@
 import { User } from "oidc-client";
+import TransactionError from "../classes/transaction-error";
+import TransactionResult from "../classes/transaction-result";
 import userManager from "../redux/userManager";
 import { Global } from "../techno.config";
 
@@ -39,8 +41,7 @@ export function genericGet<TResult>(url: string): Promise<TResult> {
     });
 }
 
-export function genericGetAuth<TResult>(url: string): Promise<TResult> {
-  debugger;
+export const genericGetAuth = <TResult>(url: string): Promise<TResult> => {
   return getHeaderWithAuthorization().then((headers: Headers) => {
     return fetch(url, {
       headers,
@@ -61,4 +62,102 @@ export function genericGetAuth<TResult>(url: string): Promise<TResult> {
         throw err;
       });
   });
-}
+};
+
+export const genericPost = <TPostData, TResult>(
+  url: string,
+  data: TPostData
+): Promise<TransactionResult<TResult>> => {
+  return getHeaderWithAuthorization().then((headers: Headers) => {
+    const tResult = new TransactionResult<TResult>();
+    const content = JSON.stringify(data);
+    return fetch(url, {
+      headers,
+      method: "POST",
+      body: content,
+    })
+      .then((response) => {
+        // 400 (bad request) here
+        if (response.status === 400) {
+          return response.json().then((r: Array<TransactionError>) => {
+            tResult.success = false;
+            tResult.error = r;
+            return tResult;
+          });
+        }
+
+        return response.json().then((r: TResult) => {
+          tResult.success = true;
+          tResult.model = r;
+          return tResult;
+        });
+      })
+      .catch((err: any) => {
+        // 500 (internal server error) here
+        console.log(`Could not connect to back end: ${err}`);
+        throw err;
+      });
+  });
+};
+
+export const genericPut = <TPostData>(
+  url: string,
+  data: TPostData
+): Promise<TransactionResult<TPostData>> => {
+  return getHeaderWithAuthorization().then((headers: Headers) => {
+    const tResult = new TransactionResult<TPostData>();
+    const content = JSON.stringify(data);
+    return fetch(url, {
+      headers,
+      method: "PUT",
+      body: content,
+    })
+      .then((response) => {
+        // 400 (bad request) here
+        if (response.status === 400) {
+          return response.json().then((r: Array<TransactionError>) => {
+            tResult.success = false;
+            tResult.error = r;
+            return tResult;
+          });
+        }
+        tResult.success = true;
+        tResult.model = data;
+        return tResult;
+      })
+      .catch((err: any) => {
+        // 500 (internal server error) here
+        console.log(`Could not connect to back end: ${err}`);
+        throw err;
+      });
+  });
+};
+
+export const genericDelete = (
+  url: string
+): Promise<TransactionResult<undefined>> => {
+  return getHeaderWithAuthorization().then((headers: Headers) => {
+    const tResult = new TransactionResult<undefined>();
+    return fetch(url, {
+      headers,
+      method: "DELETE",
+    })
+      .then((response) => {
+        // 400 (bad request) here
+        if (response.status === 400) {
+          return response.json().then((r: Array<TransactionError>) => {
+            tResult.success = false;
+            tResult.error = r;
+            return tResult;
+          });
+        }
+        tResult.success = true;
+        return tResult;
+      })
+      .catch((err: any) => {
+        // 500 (internal server error) here
+        console.log(`Could not connect to back end: ${err}`);
+        throw err;
+      });
+  });
+};

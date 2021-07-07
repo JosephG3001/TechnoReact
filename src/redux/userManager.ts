@@ -27,13 +27,13 @@ const userManagerConfig: UserManagerSettings = {
   client_id: "reactSpa",
   redirect_uri: `${Global.spaUrl}/callback`,
   response_type: "code",
-  scope: "openid profile contentapi newsapi",
+  scope: "openid profile contentapi newsapi offline_access",
   authority: Global.identityUrl,
-  silent_redirect_uri: `${Global.spaUrl}/silentrenew`,
+  // silent_redirect_uri: `${Global.spaUrl}/silentrenew`,
   automaticSilentRenew: true,
   filterProtocolClaims: true,
   loadUserInfo: true,
-  monitorSession: true,
+  monitorSession: false,
   includeIdTokenInSilentRenew: false,
 };
 
@@ -58,6 +58,11 @@ const createManager = () => {
 
   localUserManager.events.addUserSignedOut(() => {
     console.log("addUserSignedOut");
+    localUserManager.signinRedirect({
+      data: {
+        path: process.env.WEB_URL,
+      },
+    });
   });
 
   localUserManager.events.addSilentRenewError((error) => {

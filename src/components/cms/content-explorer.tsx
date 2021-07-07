@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Section from "../../classes/section";
+import { selectArticleForEdit } from "../../redux/reducers/article.reducer";
 import {
   ESectionsState,
   loadSections,
@@ -35,10 +36,12 @@ const StyledContentExplorer = styled.div`
     }
 
     .content-editor {
-      flex: 2;
+      flex: 2 1 auto;
       background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour};
       margin: 15px;
       padding: 15px;
+      display: flex;
+      flex-direction: column;
     }
 
     .content-explorer-header,
@@ -60,16 +63,18 @@ const ContentExplorer: React.FC = () => {
 
   const sectionsState = useSelector(selectSectionsState);
   const sections = useSelector(selectSections, shallowEqual);
+  const articleForEdit = useSelector(selectArticleForEdit);
 
   const rootSection: Section = {
     displayOrder: 0,
     articleList: [],
     icon: "fa-home",
-    sectionId: "0",
+    sectionId: "Root",
     sectionName: "Root",
     inverseParentSection: sections,
     parentSectionId: "0",
     parentSectionName: "",
+    visible: true,
   };
 
   useEffect(() => {
@@ -103,7 +108,11 @@ const ContentExplorer: React.FC = () => {
         </div>
         <div className="content-editor">
           <h1 className="content-editor-header">Content Editor</h1>
-          <ContentEditor />
+          {!articleForEdit ? (
+            <div>No Article</div>
+          ) : (
+            <ContentEditor articleForEdit={articleForEdit} />
+          )}
         </div>
       </div>
     </StyledContentExplorer>

@@ -1,4 +1,4 @@
-import { createGlobalStyle, css } from "styled-components";
+import styled, { createGlobalStyle, css } from "styled-components";
 
 export const Default = css`
   body {
@@ -79,8 +79,40 @@ export const Default = css`
       box-shadow: none !important;
     }
   }
+
+  .form-control {
+    &.error {
+      border-color: red;
+    }
+  }
+
+  .error-label {
+    color: red;
+  }
+
+  .Toastify__toast-container {
+    margin-top: ${({ theme }) => theme.metrics.topNavHeight};
+  }
 `;
 
 export const DefaultStyle = createGlobalStyle`
   ${Default}
+`;
+
+export const StyledModalFooter = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-left: auto;
+
+  div {
+    button {
+      margin-right: 15px;
+    }
+
+    &:last-child {
+      button {
+        margin-right: 0px !important;
+      }
+    }
+  }
 `;

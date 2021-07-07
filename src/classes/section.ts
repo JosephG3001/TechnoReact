@@ -3,9 +3,9 @@ import ArticleListItem from "./article-list-item";
 export default class Section {
   sectionId: string;
 
-  parentSectionId: string;
+  parentSectionId: string | null;
 
-  parentSectionName: string;
+  parentSectionName: string | null;
 
   inverseParentSection: Array<Section>;
 
@@ -16,4 +16,6 @@ export default class Section {
   icon: string;
 
   articleList: Array<ArticleListItem>;
+
+  visible: boolean;
 }
