@@ -93,6 +93,10 @@ export const Default = css`
   .Toastify__toast-container {
     margin-top: ${({ theme }) => theme.metrics.topNavHeight};
   }
+
+  /* .tox-silver-sink {
+    display: none !important;
+  } */
 `;
 
 export const DefaultStyle = createGlobalStyle`

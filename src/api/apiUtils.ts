@@ -1,4 +1,5 @@
 import { User } from "oidc-client";
+import FileStoreResult from "../classes/fileStoreResult";
 import TransactionError from "../classes/transaction-error";
 import TransactionResult from "../classes/transaction-result";
 import userManager from "../redux/userManager";
@@ -81,7 +82,7 @@ export const genericPost = <TPostData, TResult>(
         if (response.status === 400) {
           return response.json().then((r: Array<TransactionError>) => {
             tResult.success = false;
-            tResult.error = r;
+            tResult.errors = r;
             return tResult;
           });
         }
@@ -117,7 +118,7 @@ export const genericPut = <TPostData>(
         if (response.status === 400) {
           return response.json().then((r: Array<TransactionError>) => {
             tResult.success = false;
-            tResult.error = r;
+            tResult.errors = r;
             return tResult;
           });
         }
@@ -147,7 +148,7 @@ export const genericDelete = (
         if (response.status === 400) {
           return response.json().then((r: Array<TransactionError>) => {
             tResult.success = false;
-            tResult.error = r;
+            tResult.errors = r;
             return tResult;
           });
         }
@@ -160,4 +161,34 @@ export const genericDelete = (
         throw err;
       });
   });
+};
+
+export const postFileFormData = (
+  url: string,
+  blobInfo: any
+): Promise<FileStoreResult> => {
+  const promise = new Promise<FileStoreResult>((resolve, reject) => {
+    userManager.getUser().then((user: User | null) => {
+      const fd = new FormData();
+      fd.append("fileUpload", blobInfo.blob(), blobInfo.filename());
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("POST", url);
+      xhr.responseType = "json";
+      xhr.setRequestHeader("Authorization", `Bearer ${user?.access_token}`);
+
+      xhr.onload = () => {
+        const result = xhr.response as FileStoreResult;
+        if (result) {
+          resolve(result);
+        } else {
+          console.log(result);
+          reject(result);
+        }
+      };
+
+      xhr.send(fd);
+    });
+  });
+  return promise;
 };

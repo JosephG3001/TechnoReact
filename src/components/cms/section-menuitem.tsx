@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/interactive-supports-focus */
 import React, { useMemo, useState } from "react";
@@ -16,6 +15,7 @@ import AddEditSectionModal, {
   EMenuEntityType,
   IAddEditModalProps,
 } from "./add-edit-section-modal";
+import DeleteArticleModal from "./delete-article-modal";
 import DeleteSectionModal from "./delete-section-modal";
 
 const StyledMenuItem = styled.div`
@@ -79,6 +79,8 @@ const StyledMenuItem = styled.div`
 const ArticleLink: React.FC<ArticleListItem> = ({ articleName, articleId }) => {
   const dispatch = useDispatch();
 
+  const [showDeleteArticleModal, setShowDeleteArticleModal] = useState(false);
+
   return (
     <>
       <div
@@ -92,10 +94,19 @@ const ArticleLink: React.FC<ArticleListItem> = ({ articleName, articleId }) => {
         </ContextMenuTrigger>
       </div>
       <ContextMenu id={`ContextMenu_Article_${articleId}`}>
-        <MenuItem>Rename Article</MenuItem>
-        <hr />
-        <MenuItem>Delete Article</MenuItem>
+        {/* <MenuItem>Rename Article</MenuItem>
+        <hr /> */}
+        <MenuItem onClick={() => setShowDeleteArticleModal(true)}>
+          Delete Article
+        </MenuItem>
       </ContextMenu>
+
+      <DeleteArticleModal
+        articleId={articleId}
+        closeModal={() => setShowDeleteArticleModal(false)}
+        showModal={showDeleteArticleModal}
+        onClose={() => setShowDeleteArticleModal(false)}
+      />
     </>
   );
 };

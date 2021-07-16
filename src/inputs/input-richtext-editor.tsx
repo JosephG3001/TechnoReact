@@ -1,61 +1,117 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { Editor } from "@tinymce/tinymce-react";
 import { FC } from "react";
 import styled from "styled-components";
+import { postFileFormData } from "../api/apiUtils";
+import FileStoreResult from "../classes/fileStoreResult";
+import { Global } from "../techno.config";
 
-const StyledInputRichtextEditor = styled.div`
-  overflow-x: hidden;
+interface IStyledInputRichtextEditorProps {
+  darkMode: boolean;
+}
 
-  .ck_content {
-    background-color: #000 !important;
+const StyledInputRichtextEditor = styled.div<IStyledInputRichtextEditorProps>`
+  .rdw-editor-toolbar {
+    color: ${(props) => (props.darkMode ? "#fff" : "#000")};
+    background-color: ${(props) => (props.darkMode ? "#888" : "#eee")};
+    border-color: ${(props) => (props.darkMode ? "#999" : "#eee")} !important;
+
+    .rdw-option-wrapper {
+      color: ${(props) => (props.darkMode ? "#fff" : "#000")};
+      background-color: ${(props) => (props.darkMode ? "#888" : "#eee")};
+      border-color: ${(props) => (props.darkMode ? "#999" : "#eee")} !important;
+    }
+
+    .rdw-dropdown-selectedtext {
+      color: ${(props) => (props.darkMode ? "#fff" : "#000")};
+      background-color: ${(props) => (props.darkMode ? "#888" : "#eee")};
+      border-color: ${(props) => (props.darkMode ? "#999" : "#eee")} !important;
+    }
+  }
+
+  .rdw-editor-main {
+    color: ${(props) => (props.darkMode ? "#fff" : "#000")};
+    background-color: ${(props) => (props.darkMode ? "#444" : "#eee")};
+    height: calc(100vh - 370px);
+    overflow-y: auto;
+
+    .DraftEditor-root {
+    }
   }
 `;
 
 interface IInputRichtextEditorProps {
-  name: string;
-  value: string;
-  onChange: (newValue: string) => void;
+  initialValue: string;
+  darkMode?: boolean;
+  onChange: (value: string) => void;
 }
 
 const InputRichtextEditor: FC<IInputRichtextEditorProps> = ({
-  name,
-  value,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  initialValue,
   onChange,
+  darkMode,
 }) => {
-  // ClassicEditor.contentsCss = ["/css/ckeditor-contents.css"];
+  const fileUploadHandler = (blobInfo, success, failure, progress) => {
+    postFileFormData(`${Global.fileStoreUrl}/api/file`, blobInfo).then(
+      (result: FileStoreResult) => {
+        if (!result.success) {
+          failure(result.errorMessage);
+        }
+        const imageLocation = `${
+          window.location.origin
+        }/images/${blobInfo.filename()}`;
+        success(imageLocation);
+        // success(result.location);
+      }
+    );
+  };
 
   return (
-    <StyledInputRichtextEditor>
-      <html lang="en">
-        <body>
-          <CKEditor
-            id={name}
-            name={name}
-            editor={ClassicEditor}
-            config={{
-              contentsCss: ["/css/ckeditor-contents.css"],
-              allowedContent: true,
-              format_tags: "p;h1;h2;h3;pre",
-              extraPlugins: "CodeBlock",
-            }}
-            data={value}
-            onReady={(editor) => {
-              // You can store the "editor" and use when it is needed.
-              console.log("Editor is ready to use!", editor);
-              // editor.config.allowedContent = true;
-            }}
-            onChange={(event, editor) => {
-              const data = editor.getData();
-              onChange(data);
-              console.log({ event, editor, data });
-            }}
-            onBlur={(event, editor) => {
-              console.log("Blur.", editor);
-            }}
-            onFocus={(event, editor) => {
-              console.log("Focus.", editor);
-            }}
-          />
-        </body>
-      </html>
+    <StyledInputRichtextEditor darkMode={darkMode ?? false}>
+      <Editor
+        initialValue={initialValue}
+        tinymceScriptSrc={`${process.env.PUBLIC_URL}/content/tinymce/tinymce.min.js`}
+        onEditorChange={(e) => {
+          onChange(e);
+        }}
+        init={{
+          height: 500,
+          menubar: true,
+          content_css: "oxidedark",
+          codesample_global_prismjs: true,
+          // file_picker_callback: filePickerCallback,
+          // images_upload_url: `${Global.fileStoreUrl}/api/file`,
+          images_upload_handler: fileUploadHandler,
+          codesample_languages: [
+            { text: "HTML/XML", value: "markup" },
+            { text: "JavaScript", value: "javascript" },
+            { text: "CSS", value: "css" },
+            { text: "PHP", value: "php" },
+            { text: "Ruby", value: "ruby" },
+            { text: "Python", value: "python" },
+            { text: "Java", value: "java" },
+            { text: "C", value: "c" },
+            { text: "C#", value: "csharp" },
+            { text: "C++", value: "cpp" },
+          ],
+          plugins: [
+            "advlist autolink lists link image charmap print preview anchor",
+            "searchreplace visualblocks code fullscreen",
+            "insertdatetime media table paste code help wordcount",
+            "codesample",
+          ],
+          toolbar:
+            "undo redo | formatselect | " +
+            "bold italic backcolor | alignleft aligncenter " +
+            "alignright alignjustify | bullist numlist outdent indent | " +
+            "removeformat | help | " +
+            "image | " +
+            "codesample code",
+          content_style:
+            "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+        }}
+      />
     </StyledInputRichtextEditor>
   );
 };

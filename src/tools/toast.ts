@@ -13,6 +13,7 @@ const showToast = (msg: string, type: ToastTypes) => {
   toast(msg, {
     autoClose: 5000, // set false to disable auto close
     type: localType,
+    position: toast.POSITION.BOTTOM_RIGHT,
   });
 };
 

@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { deleteSection } from "../../api/sections-service";
 import withModal from "../../hocs/withModal";
 import TechnoButton from "../../inputs/techno-button";
-import { removeSectionFromRedux } from "../../redux/reducers/sections.reducer";
+import removeSectionFromRedux from "../../redux/reducers/section-thunks/remove-section-from-redux";
 import { StyledModalFooter } from "../../styles";
 import { showSuccessToast } from "../../tools/toast";
 

@@ -3,9 +3,9 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Section from "../../classes/section";
 import { selectArticleForEdit } from "../../redux/reducers/article.reducer";
+import loadSections from "../../redux/reducers/section-thunks/load-sections";
 import {
   ESectionsState,
-  loadSections,
   selectSections,
   selectSectionsState,
 } from "../../redux/reducers/sections.reducer";
@@ -36,7 +36,7 @@ const StyledContentExplorer = styled.div`
     }
 
     .content-editor {
-      flex: 2 1 auto;
+      flex: 2;
       background-color: ${({ theme }) => theme.pallet.sidebarBackgroundColour};
       margin: 15px;
       padding: 15px;

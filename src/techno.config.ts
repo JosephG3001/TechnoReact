@@ -3,6 +3,7 @@ export interface IGlobal {
   spaUrl: string;
   contentUrl: string;
   newsUrl: string;
+  fileStoreUrl: string;
 }
 
 export const Global: IGlobal = {
@@ -12,4 +13,5 @@ export const Global: IGlobal = {
   // apiUrl: "http://localhost:4010",
   contentUrl: "http://localhost:4001",
   newsUrl: "http://localhost:4002",
+  fileStoreUrl: "http://localhost:4003",
 };

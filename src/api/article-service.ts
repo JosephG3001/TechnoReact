@@ -1,7 +1,12 @@
 import ArticleEntity from "../classes/article-entity";
 import { Global } from "../techno.config";
 import { showErrorToast } from "../tools/toast";
-import { genericGetAuth } from "./apiUtils";
+import {
+  genericDelete,
+  genericGetAuth,
+  genericPost,
+  genericPut,
+} from "./apiUtils";
 
 export const loadArticlesFromApi = (
   subSectionId: string
@@ -25,4 +30,17 @@ export const loadArticleFromApi = (
   );
 };
 
-export const saveArticle = () => {};
+export const postArticle = (article: ArticleEntity) => {
+  return genericPost<ArticleEntity, string>(
+    `${Global.contentUrl}/api/article`,
+    article
+  );
+};
+
+export const putArticle = (article: ArticleEntity) => {
+  return genericPut(`${Global.contentUrl}/api/article`, article);
+};
+
+export const deleteArticle = (articleId: string) => {
+  return genericDelete(`${Global.contentUrl}/api/article?Id=${articleId}`);
+};

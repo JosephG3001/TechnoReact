@@ -27,7 +27,7 @@ const userManagerConfig: UserManagerSettings = {
   client_id: "reactSpa",
   redirect_uri: `${Global.spaUrl}/callback`,
   response_type: "code",
-  scope: "openid profile contentapi newsapi offline_access",
+  scope: "openid profile contentapi filestoreapi newsapi offline_access",
   authority: Global.identityUrl,
   // silent_redirect_uri: `${Global.spaUrl}/silentrenew`,
   automaticSilentRenew: true,

@@ -5,14 +5,14 @@ class TransactionResult<T> {
 
   model: T;
 
-  error: Array<TransactionError>;
+  errors: Array<TransactionError>;
 
   get generalError(): string | null {
-    if (!this.error || !Array.isArray(this.error)) {
+    if (!this.errors || !Array.isArray(this.errors)) {
       return null;
     }
 
-    const tryFindError = this.error.find(
+    const tryFindError = this.errors.find(
       (x) => x.propertyName === "generalError" || x.propertyName === "error"
     )?.errors?.[0];
 

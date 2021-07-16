@@ -27,7 +27,10 @@ const CMSLayout: FC = () => {
         });
       } else {
         userManager.signinSilent().catch((error: Error) => {
-          if (error.message.indexOf("login_required") !== -1) {
+          if (
+            error.message.indexOf("login_required") !== -1 ||
+            error.message.indexOf("invalid_grant") !== -1
+          ) {
             userManager.signinRedirect({
               state: {
                 path: window.location.pathname,
@@ -55,7 +58,7 @@ const CMSLayout: FC = () => {
           </div>
         </div>
       ) : (
-        <LoadingPage labelText="Redirecting to login..." />
+        <LoadingPage labelText="CMS Redirecting to login..." />
       )}
     </>
   );

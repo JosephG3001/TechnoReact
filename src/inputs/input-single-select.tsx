@@ -67,6 +67,7 @@ interface IInputSingleSelectProps {
   textProperty: string;
   valueProperty: string;
   onChange: Function;
+  isDisabled: boolean;
 }
 
 const InputSingleSelect: FC<IInputSingleSelectProps> = ({
@@ -77,6 +78,7 @@ const InputSingleSelect: FC<IInputSingleSelectProps> = ({
   textProperty,
   valueProperty,
   onChange,
+  isDisabled,
 }) => {
   const style = {
     control: (base) => ({
@@ -125,6 +127,7 @@ const InputSingleSelect: FC<IInputSingleSelectProps> = ({
     <StyledInputSingleSelect>
       <label htmlFor={name}>{label}</label>
       <Select
+        isDisabled={isDisabled}
         styles={style}
         name={name}
         options={mapItems()}

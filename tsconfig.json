@@ -22,6 +22,7 @@
     "strictPropertyInitialization": false,
     "noImplicitReturns": false,
     "noImplicitAny": false,
+    //"experimentalDecorators": true,
   },
   "include": [
     "src",

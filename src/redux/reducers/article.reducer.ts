@@ -35,6 +35,9 @@ const slice = createSlice({
     loadArticleFailed(state) {
       state.articleState = EArticleState.Failed;
     },
+    clearArticle(state) {
+      state.article = null;
+    },
   },
 });
 
@@ -44,7 +47,14 @@ export const {
   loadingArticle,
   loadedArticle,
   loadArticleFailed,
+  clearArticle,
 } = slice.actions;
+
+// Selectors
+export const selectArticleState = (state: AppState) =>
+  state.article.articleState;
+
+export const selectArticleForEdit = (state: AppState) => state.article.article;
 
 // Thunks
 export const loadArticle = (articleId: string) => (dispatch: AppDispatch) => {
@@ -74,9 +84,3 @@ export const createNewArticle = (parentSectionId: string) => (
     })
   );
 };
-
-// Selectors
-export const selectArticleState = (state: AppState) =>
-  state.article.articleState;
-
-export const selectArticleForEdit = (state: AppState) => state.article.article;
