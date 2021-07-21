@@ -76,7 +76,8 @@ const StyledContentEditor = styled.div`
     justify-content: flex-end;
     align-items: center;
 
-    button {
+    button,
+    .custom-switch {
       margin-left: 15px;
     }
   }
@@ -92,7 +93,7 @@ const ContentEditor: React.FC<IContentEditorProps> = ({ articleForEdit }) => {
   const techs = useSelector(selectSections);
   const [darkMode, setDarkMode] = useState(false);
   const [tech, setTech] = useState<Section>();
-  const [html, setHtml] = useState<string>();
+  const [html, setHtml] = useState<string>(articleForEdit.articleHtml);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -108,6 +109,7 @@ const ContentEditor: React.FC<IContentEditorProps> = ({ articleForEdit }) => {
   const { handleSubmit, clearErrors, setValue, register, errors, reset } = form;
 
   useEffect(() => {
+    setHtml(articleForEdit.articleHtml);
     reset(articleForEdit);
   }, [reset, articleForEdit]);
 
@@ -165,12 +167,16 @@ const ContentEditor: React.FC<IContentEditorProps> = ({ articleForEdit }) => {
             )}
           />
           <div className="article-header">
-            <InputToggleSwitch
-              label="Toggle Dark Mode"
-              value={darkMode}
-              onChange={(e) => {
-                setDarkMode(e);
-              }}
+            <Controller
+              name={nameof<ArticleEntity>("visible")}
+              render={({ name, onChange, value }) => (
+                <InputToggleSwitch
+                  label="Active"
+                  value={value}
+                  name={name}
+                  onChange={onChange}
+                />
+              )}
             />
 
             <TechnoButton
@@ -231,6 +237,7 @@ const ContentEditor: React.FC<IContentEditorProps> = ({ articleForEdit }) => {
           </div>
           <div className="article-content-wrapper">
             <InputRichtextEditor
+              editorKey={articleForEdit.articleId}
               initialValue={articleForEdit.articleHtml}
               onChange={(e) => {
                 setHtml(e);

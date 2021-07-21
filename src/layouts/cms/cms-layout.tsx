@@ -3,7 +3,7 @@ import React, { FC, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
 import BackgroundImage from "../../components/backgroundImage";
-import ContentExplorer from "../../components/cms/content-explorer";
+import ContentExplorer from "../../components/cms/content-explorer/content-explorer";
 import LoadingPage from "../../components/loading-page";
 import TopNav from "../../components/top-nav/top-nav";
 import { AppState } from "../../redux/store";

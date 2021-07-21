@@ -2,18 +2,18 @@
 import React, { useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
-import { postSection, putSection } from "../../api/sections-service";
-import Section from "../../classes/section";
-import withModal from "../../hocs/withModal";
-import InputTextBox from "../../inputs/input-textbox";
-import TechnoButton from "../../inputs/techno-button";
-import addSectionToRedux from "../../redux/reducers/section-thunks/add-section-to-redux";
-import updateSectionInRedux from "../../redux/reducers/section-thunks/update-section-in-redux";
-import { selectSection } from "../../redux/reducers/sections.reducer";
-import { StyledModalFooter } from "../../styles";
-import setServerSideFormErrors from "../../tools/formUtils";
-import nameof from "../../tools/nameof";
-import { showErrorToast, showSuccessToast } from "../../tools/toast";
+import { postSection, putSection } from "../../../../api/sections-service";
+import Section from "../../../../classes/section";
+import withModal from "../../../../hocs/withModal";
+import InputTextBox from "../../../../inputs/input-textbox";
+import TechnoButton from "../../../../inputs/techno-button";
+import addSectionToRedux from "../../../../redux/reducers/section-thunks/add-section-to-redux";
+import updateSectionInRedux from "../../../../redux/reducers/section-thunks/update-section-in-redux";
+import { selectSection } from "../../../../redux/reducers/sections.reducer";
+import { StyledModalFooter } from "../../../../styles";
+import setServerSideFormErrors from "../../../../tools/formUtils";
+import nameof from "../../../../tools/nameof";
+import { showErrorToast, showSuccessToast } from "../../../../tools/toast";
 
 class AddEditSectionDto {
   recordId: string;

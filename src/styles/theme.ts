@@ -53,6 +53,8 @@ export const theme = {
     formControlBoxSelectedColour: globalThemeColour1,
     formControlSelectItemHoverColour: globalThemeColour3,
     formControlSelectItemSelectedColour: globalThemeColour1,
+
+    disabledArticleColor: "red",
   },
   metrics: {
     sidebarWidth: "250px",

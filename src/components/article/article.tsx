@@ -1,9 +1,9 @@
 /* eslint-disable react/no-danger */
-import { CircularProgress } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import styled from "styled-components";
+import { loadArticleFromApi } from "../../api/article-service";
 import ArticleEntity from "../../classes/article-entity";
 import {
   EArticlesState,
@@ -14,12 +14,13 @@ import {
   getArticleFromUrl,
   tryStoreCurrentTechAndSubsection,
 } from "../../tools/url-helper";
+import LoadingSpinner from "../loading-spinner";
 
 declare let SyntaxHighlighter: any;
+declare let Prism: any;
 
 const StyledArticle = styled.div`
-  .error,
-  .loading-spinner-container {
+  .error {
     padding-top: 20px;
   }
 
@@ -44,10 +45,12 @@ const StyledArticle = styled.div`
 const Article: React.FC = () => {
   const sectionsState = useSelector(selectSectionsState);
   const articlesState = useSelector(selectArticlesState);
-  const [article, setArticle] = useState<ArticleEntity>();
+  const [localArticle, setLocalArticle] = useState<ArticleEntity>();
+  const [loading, setLoading] = useState(true);
 
   const params = useParams();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const highlight = () => {
     let retries = 10;
     const tryHighlight = setTimeout(() => {
@@ -56,7 +59,8 @@ const Article: React.FC = () => {
       SyntaxHighlighter.all();
       SyntaxHighlighter.highlight({ gutter: false });
       // eslint-disable-next-line no-plusplus
-      retries--;
+      Prism.highlightAll();
+      retries -= 1;
       if (retries === 0) {
         clearTimeout(tryHighlight);
       }
@@ -68,29 +72,35 @@ const Article: React.FC = () => {
     if (articlesState === EArticlesState.Loaded) {
       const articleFromUrl = getArticleFromUrl();
       if (articleFromUrl) {
-        if (!article || article.articleId !== articleFromUrl.articleId) {
-          setArticle(articleFromUrl);
-          highlight();
+        if (
+          !localArticle ||
+          localArticle.articleId !== articleFromUrl.articleId
+        ) {
+          setLoading(true);
+          loadArticleFromApi(articleFromUrl.articleId).then((article) => {
+            setLocalArticle(article);
+            highlight();
+            setLoading(false);
+          });
         }
       }
     }
-  }, [params, article, sectionsState, articlesState]);
+  }, [params, localArticle, sectionsState, articlesState]);
 
   return (
     <StyledArticle>
-      {articlesState === EArticlesState.Loaded && article && (
+      {articlesState === EArticlesState.Loaded && localArticle && (
         <div className="article">
           <div className="article-content">
-            <div dangerouslySetInnerHTML={{ __html: article.articleHtml }} />
+            <div
+              dangerouslySetInnerHTML={{ __html: localArticle.articleHtml }}
+            />
           </div>
         </div>
       )}
 
-      {articlesState === EArticlesState.Loading && (
-        <div className="loading-spinner-container">
-          <CircularProgress className="mat-spinner" />
-          <div>Loading article...</div>
-        </div>
+      {(articlesState === EArticlesState.Loading || loading) && (
+        <LoadingSpinner largeText={false} labelText="Loading Article..." />
       )}
     </StyledArticle>
   );

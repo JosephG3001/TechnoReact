@@ -65,6 +65,22 @@ const PublicSidebarItems: React.FC = () => {
   const sectionsState = useSelector(selectSectionsState);
   const sections = useSelector(selectSections, shallowEqual);
 
+  const doesTechsChildrenHaveArticles = (section: Section) => {
+    debugger;
+    for (let i = 0; i < section.articleList.length; i++) {
+      if (section.articleList[i].visible) {
+        return true;
+      }
+    }
+
+    for (let i = 0; i < section.inverseParentSection.length; i++) {
+      if (doesTechsChildrenHaveArticles(section.inverseParentSection[i])) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <StyledSidebarItems>
       <div className="sidebar-items">
@@ -78,9 +94,13 @@ const PublicSidebarItems: React.FC = () => {
 
         {sectionsState === ESectionsState.loaded && (
           <nav>
-            {sections.map((section: Section) => (
-              <SidebarItem key={section.sectionId} section={section} />
-            ))}
+            {sections
+              .filter((section: Section) =>
+                doesTechsChildrenHaveArticles(section)
+              )
+              .map((section: Section) => (
+                <SidebarItem key={section.sectionId} section={section} />
+              ))}
           </nav>
         )}
       </div>

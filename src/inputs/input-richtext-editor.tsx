@@ -44,6 +44,7 @@ interface IInputRichtextEditorProps {
   initialValue: string;
   darkMode?: boolean;
   onChange: (value: string) => void;
+  editorKey: string;
 }
 
 const InputRichtextEditor: FC<IInputRichtextEditorProps> = ({
@@ -51,7 +52,10 @@ const InputRichtextEditor: FC<IInputRichtextEditorProps> = ({
   initialValue,
   onChange,
   darkMode,
+  editorKey,
 }) => {
+  // const tinyRef = useRef<Editor>(null);
+
   const fileUploadHandler = (blobInfo, success, failure, progress) => {
     postFileFormData(`${Global.fileStoreUrl}/api/file`, blobInfo).then(
       (result: FileStoreResult) => {
@@ -62,14 +66,20 @@ const InputRichtextEditor: FC<IInputRichtextEditorProps> = ({
           window.location.origin
         }/images/${blobInfo.filename()}`;
         success(imageLocation);
-        // success(result.location);
       }
     );
   };
 
+  // useEffect(() => {
+  //   debugger;
+  //   tinyRef?.current?.editor?.setContent(initialValue);
+  // }, [initialValue]);
+
   return (
     <StyledInputRichtextEditor darkMode={darkMode ?? false}>
       <Editor
+        key={editorKey}
+        // ref={tinyRef}
         initialValue={initialValue}
         tinymceScriptSrc={`${process.env.PUBLIC_URL}/content/tinymce/tinymce.min.js`}
         onEditorChange={(e) => {
@@ -94,6 +104,8 @@ const InputRichtextEditor: FC<IInputRichtextEditorProps> = ({
             { text: "C", value: "c" },
             { text: "C#", value: "csharp" },
             { text: "C++", value: "cpp" },
+            { text: "VB.Net", value: "vbnet" },
+            { text: "SQL", value: "sql" },
           ],
           plugins: [
             "advlist autolink lists link image charmap print preview anchor",

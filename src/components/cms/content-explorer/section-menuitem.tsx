@@ -5,18 +5,14 @@ import AnimateHeight from "react-animate-height";
 import { ContextMenu, ContextMenuTrigger, MenuItem } from "react-contextmenu";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import ArticleListItem from "../../classes/article-list-item";
-import Section from "../../classes/section";
-import {
-  createNewArticle,
-  loadArticle,
-} from "../../redux/reducers/article.reducer";
+import Section from "../../../classes/section";
+import { createNewArticle } from "../../../redux/reducers/article.reducer";
+import ArticleLink from "./article-link";
 import AddEditSectionModal, {
   EMenuEntityType,
   IAddEditModalProps,
-} from "./add-edit-section-modal";
-import DeleteArticleModal from "./delete-article-modal";
-import DeleteSectionModal from "./delete-section-modal";
+} from "./modals/add-edit-section-modal";
+import DeleteSectionModal from "./modals/delete-section-modal";
 
 const StyledMenuItem = styled.div`
   .link {
@@ -75,41 +71,6 @@ const StyledMenuItem = styled.div`
     }
   }
 `;
-
-const ArticleLink: React.FC<ArticleListItem> = ({ articleName, articleId }) => {
-  const dispatch = useDispatch();
-
-  const [showDeleteArticleModal, setShowDeleteArticleModal] = useState(false);
-
-  return (
-    <>
-      <div
-        className="link"
-        role="button"
-        onClick={() => dispatch(loadArticle(articleId))}
-      >
-        <i className="material-icons article-link">insert_drive_file</i>
-        <ContextMenuTrigger id={`ContextMenu_Article_${articleId}`}>
-          <span>{articleName}</span>
-        </ContextMenuTrigger>
-      </div>
-      <ContextMenu id={`ContextMenu_Article_${articleId}`}>
-        {/* <MenuItem>Rename Article</MenuItem>
-        <hr /> */}
-        <MenuItem onClick={() => setShowDeleteArticleModal(true)}>
-          Delete Article
-        </MenuItem>
-      </ContextMenu>
-
-      <DeleteArticleModal
-        articleId={articleId}
-        closeModal={() => setShowDeleteArticleModal(false)}
-        showModal={showDeleteArticleModal}
-        onClose={() => setShowDeleteArticleModal(false)}
-      />
-    </>
-  );
-};
 
 interface IMenuProps {
   section: Section;
@@ -205,6 +166,7 @@ const SectionMenuItem: React.FC<IMenuProps> = ({ section }) => {
               key={article.articleId}
               articleId={article.articleId}
               articleName={article.articleName}
+              visible={article.visible}
             />
           ))}
         </AnimateHeight>

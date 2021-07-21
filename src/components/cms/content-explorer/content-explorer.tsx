@@ -1,17 +1,17 @@
 import React, { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import Section from "../../classes/section";
-import { selectArticleForEdit } from "../../redux/reducers/article.reducer";
-import loadSections from "../../redux/reducers/section-thunks/load-sections";
+import Section from "../../../classes/section";
+import { selectArticleForEdit } from "../../../redux/reducers/article.reducer";
+import loadSections from "../../../redux/reducers/section-thunks/load-sections";
 import {
   ESectionsState,
   selectSections,
   selectSectionsState,
-} from "../../redux/reducers/sections.reducer";
-import ErrorTriangle from "../error-triangle";
-import LoadingSpinner from "../loading-spinner";
-import ContentEditor from "./content-editor";
+} from "../../../redux/reducers/sections.reducer";
+import ErrorTriangle from "../../error-triangle";
+import LoadingSpinner from "../../loading-spinner";
+import ContentEditor from "../content-editor";
 import SectionMenuItem from "./section-menuitem";
 
 const StyledContentExplorer = styled.div`

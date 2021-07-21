@@ -71,16 +71,17 @@ export const loadArticle = (articleId: string) => (dispatch: AppDispatch) => {
 export const createNewArticle = (parentSectionId: string) => (
   dispatch: AppDispatch
 ) => {
-  dispatch(
-    loadedArticle({
-      DisplayOrder: 0,
-      articleHtml: "",
-      sectionId: parentSectionId,
-      visible: true,
-      articleName: "*New Article*",
-      articleDate: new Date().toString(),
-      createdByUserId: "",
-      articleId: "",
-    })
-  );
+  dispatch(loadingArticle());
+
+  const article = new ArticleEntity();
+  article.DisplayOrder = 0;
+  article.articleHtml = "";
+  article.sectionId = parentSectionId;
+  article.visible = true;
+  article.articleName = "--New Article--";
+  article.articleDate = new Date().toString();
+  article.createdByUserId = "";
+  article.articleId = "";
+
+  dispatch(loadedArticle(article));
 };

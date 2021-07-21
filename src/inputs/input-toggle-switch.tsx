@@ -4,12 +4,14 @@ interface IInputToggleSwitchProps {
   value: boolean;
   onChange: (newValue: boolean) => void;
   label: string;
+  name?: string;
 }
 
 const InputToggleSwitch: FC<IInputToggleSwitchProps> = ({
   value,
   onChange,
   label,
+  name,
 }) => {
   return (
     <div className="custom-control custom-switch">
@@ -17,6 +19,7 @@ const InputToggleSwitch: FC<IInputToggleSwitchProps> = ({
         type="checkbox"
         className="custom-control-input"
         id="customSwitches"
+        name={name}
         checked={value}
         onChange={(e) => {
           onChange(e.target.checked);
