@@ -7,11 +7,14 @@ export interface IGlobal {
 }
 
 export const Global: IGlobal = {
-  identityUrl: "https://localhost:5001",
-  spaUrl: "http://localhost:3000",
-  // apiUrl: "http://api.technolibrary.co.uk",
-  // apiUrl: "http://localhost:4010",
-  contentUrl: "http://localhost:4001",
-  newsUrl: "http://localhost:4002",
-  fileStoreUrl: "http://localhost:4003",
+  identityUrl: "https://login.technolibrary.co.uk",
+  // identityUrl: "https://localhost:5001",
+  spaUrl: "https://technolibrary.co.uk",
+  // spaUrl: "http://localhost:3000",
+  contentUrl: "https://content.technolibrary.co.uk",
+  // contentUrl: "http://localhost:4001",
+  newsUrl: "https://news.technolibrary.co.uk",
+  // newsUrl: "http://localhost:4002",
+  fileStoreUrl: "https://filestore.technolibrary.co.uk",
+  // fileStoreUrl: "http://localhost:4003",
 };

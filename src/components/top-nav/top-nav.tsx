@@ -91,19 +91,19 @@ export const TopNav: React.FC = () => {
             </a>
           </li>
           <li className="top-nav-menu-item">
-            <a href="http://vue.technolibrary.co.uk/">
+            <a href="https://vue.technolibrary.co.uk/">
               <i className="fab fa-vuejs top-nav-menu-item-icon" />
               <span className="top-nav-menu-item-text">Vue Site</span>
             </a>
           </li>
           <li className="top-nav-menu-item">
-            <a href="http://angular.technolibrary.co.uk/">
+            <a href="https://angular.technolibrary.co.uk/">
               <i className="fab fa-angular top-nav-menu-item-icon" />
               <span className="top-nav-menu-item-text">Angular Site</span>
             </a>
           </li>
           <li className="top-nav-menu-item">
-            <a href="http://www.technolibrary.co.uk/">
+            <a href="https://classic.technolibrary.co.uk/">
               <i className="top-nav-menu-item-icon material-icons">language</i>
               <span className="top-nav-menu-item-text">Classic Site</span>
             </a>

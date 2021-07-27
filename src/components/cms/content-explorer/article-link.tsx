@@ -10,8 +10,12 @@ import DeleteArticleModal from "./modals/delete-article-modal";
 
 const StyledArticleLink = styled.div`
   .link {
-    .disabled {
-      color: ${({ theme }) => theme.pallet.disabledArticleColor} !important;
+    &.disabled {
+      color: ${({ theme }) => theme.pallet.disabledArticleColor};
+
+      .material-icons {
+        color: ${({ theme }) => theme.pallet.disabledArticleColor};
+      }
     }
   }
 `;
@@ -28,14 +32,14 @@ const ArticleLink: FC<ArticleListItem> = ({
   return (
     <StyledArticleLink>
       <div
-        className="link"
+        className={`link ${visible ? "" : "disabled"}`}
         role="button"
         onClick={() => dispatch(loadArticle(articleId))}
       >
         {visible ? (
           <i className="material-icons article-link">insert_drive_file</i>
         ) : (
-          <i className="material-icons article-link disabled">no_accounts</i>
+          <i className="material-icons article-link">no_accounts</i>
         )}
 
         <ContextMenuTrigger id={`ContextMenu_Article_${articleId}`}>

@@ -30,8 +30,15 @@ const StyledMenuItem = styled.div`
       }
     }
 
+    span {
+      transition: all 0.2s linear;
+    }
+
     &:hover {
-      color: ${({ theme }) => theme.pallet.themeColour1};
+      span,
+      .material-icons {
+        color: ${({ theme }) => theme.pallet.themeColour1};
+      }
     }
   }
 

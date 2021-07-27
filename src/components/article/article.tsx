@@ -16,7 +16,6 @@ import {
 } from "../../tools/url-helper";
 import LoadingSpinner from "../loading-spinner";
 
-declare let SyntaxHighlighter: any;
 declare let Prism: any;
 
 const StyledArticle = styled.div`
@@ -54,11 +53,6 @@ const Article: React.FC = () => {
   const highlight = () => {
     let retries = 10;
     const tryHighlight = setTimeout(() => {
-      SyntaxHighlighter.defaults.toolbar = false;
-      SyntaxHighlighter.defaults.gutter = false;
-      SyntaxHighlighter.all();
-      SyntaxHighlighter.highlight({ gutter: false });
-      // eslint-disable-next-line no-plusplus
       Prism.highlightAll();
       retries -= 1;
       if (retries === 0) {

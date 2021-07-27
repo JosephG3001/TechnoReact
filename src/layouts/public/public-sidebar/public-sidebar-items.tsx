@@ -66,7 +66,6 @@ const PublicSidebarItems: React.FC = () => {
   const sections = useSelector(selectSections, shallowEqual);
 
   const doesTechsChildrenHaveArticles = (section: Section) => {
-    debugger;
     for (let i = 0; i < section.articleList.length; i++) {
       if (section.articleList[i].visible) {
         return true;
