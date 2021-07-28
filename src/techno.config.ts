@@ -6,15 +6,20 @@ export interface IGlobal {
   fileStoreUrl: string;
 }
 
-export const Global: IGlobal = {
-  identityUrl: "https://login.technolibrary.co.uk",
-  // identityUrl: "https://localhost:5001",
-  spaUrl: "https://technolibrary.co.uk",
-  // spaUrl: "http://localhost:3000",
-  contentUrl: "https://content.technolibrary.co.uk",
-  // contentUrl: "http://localhost:4001",
-  newsUrl: "https://news.technolibrary.co.uk",
-  // newsUrl: "http://localhost:4002",
-  fileStoreUrl: "https://filestore.technolibrary.co.uk",
-  // fileStoreUrl: "http://localhost:4003",
+const GlobalDev: IGlobal = {
+  identityUrl: "https://localhost:5001",
+  spaUrl: "http://localhost:3000",
+  contentUrl: "http://localhost:4001",
+  newsUrl: "http://localhost:4002",
+  fileStoreUrl: "http://localhost:4003",
 };
+
+const GlobalProd: IGlobal = {
+  identityUrl: "https://login.technolibrary.co.uk",
+  spaUrl: "https://www.technolibrary.co.uk",
+  contentUrl: "https://content.technolibrary.co.uk",
+  newsUrl: "https://news.technolibrary.co.uk",
+  fileStoreUrl: "https://filestore.technolibrary.co.uk",
+};
+export const Global =
+  process.env.NODE_ENV === "production" ? GlobalProd : GlobalDev;
