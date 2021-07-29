@@ -2,7 +2,12 @@ import React, { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Section from "../../../classes/section";
-import { selectArticleForEdit } from "../../../redux/reducers/article.reducer";
+import {
+  clearArticle,
+  EArticleState,
+  selectArticleForEdit,
+  selectArticleState,
+} from "../../../redux/reducers/article.reducer";
 import loadSections from "../../../redux/reducers/section-thunks/load-sections";
 import {
   ESectionsState,
@@ -64,6 +69,7 @@ const ContentExplorer: React.FC = () => {
   const sectionsState = useSelector(selectSectionsState);
   const sections = useSelector(selectSections, shallowEqual);
   const articleForEdit = useSelector(selectArticleForEdit);
+  const articleState = useSelector(selectArticleState);
 
   const rootSection: Section = {
     displayOrder: 0,
@@ -79,6 +85,10 @@ const ContentExplorer: React.FC = () => {
 
   useEffect(() => {
     dispatch(loadSections());
+
+    return () => {
+      dispatch(clearArticle());
+    };
   }, [dispatch]);
 
   return (
@@ -108,11 +118,11 @@ const ContentExplorer: React.FC = () => {
         </div>
         <div className="content-editor">
           <h1 className="content-editor-header">Content Editor</h1>
-          {!articleForEdit ? (
-            <div>No Article</div>
-          ) : (
-            <ContentEditor articleForEdit={articleForEdit} />
+          {articleState === EArticleState.Idle && <div>No Article</div>}
+          {articleState === EArticleState.Loading && (
+            <LoadingSpinner labelText="Loading Article..." largeText={false} />
           )}
+          {articleForEdit && <ContentEditor articleForEdit={articleForEdit} />}
         </div>
       </div>
     </StyledContentExplorer>

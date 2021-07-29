@@ -114,7 +114,7 @@ const SectionMenuItem: React.FC<IMenuProps> = ({ section }) => {
       return NodeType.RootNode;
     }
 
-    if (section.parentSectionId === null && section.sectionName !== "Root") {
+    if (!section.parentSectionId && section.sectionName !== "Root") {
       return NodeType.TechNode;
     }
 

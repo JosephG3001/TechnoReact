@@ -62,9 +62,10 @@ const InputRichtextEditor: FC<IInputRichtextEditorProps> = ({
         if (!result.success) {
           failure(result.errorMessage);
         }
+
         const imageLocation = `${
-          window.location.origin
-        }/images/${blobInfo.filename()}`;
+          Global.fileStoreUrl
+        }/api/file?fileName=${blobInfo.filename()}`;
         success(imageLocation);
       }
     );
@@ -93,6 +94,7 @@ const InputRichtextEditor: FC<IInputRichtextEditorProps> = ({
           // file_picker_callback: filePickerCallback,
           // images_upload_url: `${Global.fileStoreUrl}/api/file`,
           images_upload_handler: fileUploadHandler,
+          relative_urls: false,
           codesample_languages: [
             { text: "HTML/XML", value: "markup" },
             { text: "JavaScript", value: "javascript" },

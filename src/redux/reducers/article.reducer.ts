@@ -37,6 +37,7 @@ const slice = createSlice({
     },
     clearArticle(state) {
       state.article = null;
+      state.articleState = EArticleState.Idle;
     },
   },
 });
