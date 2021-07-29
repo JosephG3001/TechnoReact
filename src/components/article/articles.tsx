@@ -52,7 +52,7 @@ const StyledArticles = styled.div`
       display: flex;
       max-width: 900px;
       margin: 15px auto;
-      padding: 15px;
+      padding: 10px;
       box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px,
         rgba(0, 0, 0, 0.12) 0px 0px 2px;
       color: ${({ theme }) => theme.pallet.foregroundColour1};
@@ -60,6 +60,7 @@ const StyledArticles = styled.div`
         theme.pallet.articleRowBackgroundcolour};
       transition: background-color 0.1s linear;
       text-decoration: none;
+      align-items: center;
 
       * {
         flex: 1;
@@ -67,6 +68,7 @@ const StyledArticles = styled.div`
 
       h3 {
         margin: 0;
+        font-size: 1em;
       }
 
       .material-icons {
@@ -75,6 +77,7 @@ const StyledArticles = styled.div`
 
       .article-date {
         color: ${({ theme }) => theme.pallet.themeColour1};
+        margin: 0;
       }
 
       &:hover {

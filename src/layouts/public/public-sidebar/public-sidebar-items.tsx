@@ -27,7 +27,7 @@ const StyledSidebarItems = styled.div`
       .sidebar-link {
         display: block;
         display: flex;
-        padding: 12px 15px;
+        padding: 10px 15px;
         width: 100%;
         font-size: 0.9em;
         text-decoration: none;
@@ -56,8 +56,46 @@ const StyledSidebarItems = styled.div`
             }
           }
         }
+
+        .section-icon {
+          font-size: 16px;
+          margin: 0 5px;
+          color: ${({ theme }) => theme.pallet.themeColour2};
+        }
+
+        .rotate-icon {
+          color: ${({ theme }) => theme.pallet.themeColour2} !important;
+        }
+
+        .rotate {
+          transition: all 0.2s linear;
+          position: absolute;
+          right: 4px;
+
+          &.deg90 {
+            transform: rotate(90deg);
+          }
+        }
+
+        &:hover {
+          background-color: ${({ theme }) =>
+            theme.pallet.sidebarButtonHoverBackgroundColour};
+
+          .section-icon {
+            color: ${({ theme }) => theme.pallet.foregroundColour1} !important;
+          }
+
+          .rotate-icon {
+            color: ${({ theme }) => theme.pallet.foregroundColour1} !important;
+          }
+        }
       }
     }
+  }
+
+  .section-children {
+    background-color: ${({ theme }) =>
+      theme.pallet.sidebarButtonBackgroundColour};
   }
 `;
 
