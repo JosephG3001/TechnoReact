@@ -1,15 +1,6 @@
+/* eslint-disable prettier/prettier */
 import React from "react";
-import Particles, { IParticlesParams } from 'react-particles-js';
-
-export default class ParticleWrapper extends React.Component {
-    render() {
-        return (
-            <div id="particles-js-container">
-                <Particles params={config2} style={style} />
-            </div>
-        );
-    }
-}
+import Particles, { IParticlesParams } from "react-particles-js";
 
 const config2: IParticlesParams = {
     "particles": {
@@ -63,3 +54,14 @@ const style = {
     'z-index': '-9999',
     top: '0',
 }
+
+
+const ParticleWrapper: React.FC = () => {
+  return (
+    <div id="particles-js-container">
+      <Particles params={config2} style={style} />
+    </div>
+  );
+};
+
+export default ParticleWrapper;

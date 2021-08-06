@@ -1,0 +1,23 @@
+{
+  "editor.tabSize": 2,
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": [
+	  "source.organizeImports",
+    "source.fixAll.eslint"
+  ],
+  "typescript.tsdk": "node_modules\\typescript\\lib",
+  "typescript.preferences.importModuleSpecifier": "non-relative",
+  "files.eol": "\n",
+  "files.exclude": {
+    "**/.git": true,
+    "**/.keep": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.DS_Store": true,
+    "**/.eslintcache": true,
+    "**/node_modules": true,
+    "**/build": true,
+  },
+  "colorize.languages": ["typescript", "javascript", "css", "scss"]
+}

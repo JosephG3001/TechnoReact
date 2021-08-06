@@ -1,17 +1,30 @@
 import { toast, TypeOptions } from "react-toastify";
 
-enum ToastTypes {
-    DEFAULT,
-    INFO,
-    WARNING,
-    ERROR,
-    SUCCESS
+export enum ToastTypes {
+  DEFAULT,
+  INFO,
+  WARNING,
+  ERROR,
+  SUCCESS,
 }
 
-export function showErrorToast(error: string) {
-    const type: TypeOptions = ToastTypes[ToastTypes.ERROR].toLowerCase() as TypeOptions;
-    toast(error, { 
-        type: type, 
-        autoClose: 5000 //set false to disable auto close
-    });
-}
+const showToast = (msg: string, type: ToastTypes) => {
+  const localType: TypeOptions = ToastTypes[type].toLowerCase() as TypeOptions;
+  toast(msg, {
+    autoClose: 5000, // set false to disable auto close
+    type: localType,
+    position: toast.POSITION.BOTTOM_RIGHT,
+  });
+};
+
+export const showErrorToast = (msg: string) => {
+  showToast(msg, ToastTypes.ERROR);
+};
+
+export const showWarningToast = (msg: string) => {
+  showToast(msg, ToastTypes.WARNING);
+};
+
+export const showSuccessToast = (msg: string) => {
+  showToast(msg, ToastTypes.SUCCESS);
+};

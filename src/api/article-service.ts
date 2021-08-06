@@ -1,15 +1,46 @@
 import ArticleEntity from "../classes/article-entity";
+import { Global } from "../techno.config";
 import { showErrorToast } from "../tools/toast";
+import {
+  genericDelete,
+  genericGetAuth,
+  genericPost,
+  genericPut,
+} from "./apiUtils";
 
-
- export function loadArticlesFromApi(subSectionId: string): Promise<ArticleEntity[]> {
-    return fetch(`http://api.technolibrary.co.uk/api/articles?id=${subSectionId}`)
-    .then(result => result.json())
-    .then((result: ArticleEntity[]) => {       
-        result = result.filter(a => a.visible);
-        return result;
-    }).catch((error: string) => {
-           showErrorToast(error);        
-        return [];
+export const loadArticlesFromApi = (
+  subSectionId: string
+): Promise<ArticleEntity[]> => {
+  return fetch(`${Global.contentUrl}/api/articles?sectionId=${subSectionId}`)
+    .then((result) => result.json())
+    .then((result: ArticleEntity[]) => {
+      return result.filter((a) => a.visible);
+    })
+    .catch((error: string) => {
+      showErrorToast(error);
+      return [];
     });
-  }
+};
+
+export const loadArticleFromApi = (
+  articleId: string
+): Promise<ArticleEntity> => {
+  return genericGetAuth<ArticleEntity>(
+    `${Global.contentUrl}/api/article?id=${articleId}`
+  );
+};
+
+export const postArticle = (article: ArticleEntity) => {
+  return genericPost<ArticleEntity, string>(
+    `${Global.contentUrl}/api/article`,
+    article
+  );
+};
+
+export const putArticle = (article: ArticleEntity) => {
+  return genericPut(`${Global.contentUrl}/api/article`, article);
+};
+
+export const deleteArticle = (articleId: string) => {
+  return genericDelete(`${Global.contentUrl}/api/article?Id=${articleId}`);
+};

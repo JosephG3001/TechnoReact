@@ -1,48 +1,59 @@
-import NewsEntity from './../../classes/news-entity';
-import * as NewsActions from './../actions/news.actions';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { loadNewsFromApi } from "../../api/news-service";
+import NewsEntity from "../../classes/news-entity";
+import { showErrorToast } from "../../tools/toast";
+import { AppDispatch, AppState } from "../store";
+
+export enum ENewsState {
+  Idle,
+  Loading,
+  Loaded,
+  Failed,
+}
 
 export interface INewsState {
-    currentAction: NewsActions.AllNewsActions;
-    news: NewsEntity[],
+  currentState: ENewsState;
+  news: NewsEntity[];
 }
 
 const InitialNewsState: INewsState = {
-    currentAction: NewsActions.NEWS_IDLE,
-    news: []
-}
+  currentState: ENewsState.Idle,
+  news: [],
+};
 
-export function newsReducer(state: INewsState = InitialNewsState, action: NewsActions.Actions): INewsState {
-    switch (action.type) {
-        case (NewsActions.NEWS_IDLE): {
-            return {
-                ...state,
-                currentAction: NewsActions.NEWS_IDLE,
-            }
-        }
+const slice = createSlice({
+  name: "news",
+  initialState: InitialNewsState as INewsState,
+  reducers: {
+    loadingNews(state) {
+      state.currentState = ENewsState.Loading;
+    },
+    loadedNews(state, action: PayloadAction<NewsEntity[]>) {
+      state.currentState = ENewsState.Loaded;
+      state.news = action.payload;
+    },
+    loadNewsFailed(state) {
+      state.currentState = ENewsState.Failed;
+    },
+  },
+});
 
-        case (NewsActions.LOADED_NEWS): {
-            return {
-                ...state,
-                currentAction: NewsActions.LOADED_NEWS,
-                news: action.news
-            }
-        }        
+export const newsReducer = slice.reducer;
+export const { loadingNews, loadedNews, loadNewsFailed } = slice.actions;
 
-        case (NewsActions.LOADING_NEWS_FAILED): {
-            return {
-                ...state,
-                currentAction: NewsActions.LOADING_NEWS_FAILED,
-            }
-        }
+export const selectNews = (state: AppState) => state.news.news;
+export const selectNewsState = (state: AppState) => state.news.currentState;
 
-        case (NewsActions.LOADING_NEWS): {
-            return {
-                ...state,
-                currentAction: NewsActions.LOADING_NEWS,
-            }
-        }
-
-        default:
-            return state;
-    }
-}
+export const loadNews = () => (dispatch: AppDispatch) => {
+  dispatch(loadingNews());
+  return loadNewsFromApi()
+    .then((result: NewsEntity[]) => {
+      if (result) {
+        dispatch(loadedNews(result));
+      }
+    })
+    .catch((error: string) => {
+      showErrorToast(error);
+      dispatch(loadNewsFailed());
+    });
+};

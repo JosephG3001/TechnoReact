@@ -1,70 +1,103 @@
-import { CircularProgress } from '@material-ui/core';
-import React, { useEffect, useState } from 'react';
-import ArticleEntity from '../../classes/article-entity';
-import { getArticleFromUrl, tryStoreCurrentTechAndSubsection } from '../../tools/url-helper';
-import './article.scss';
-import { useSelector } from 'react-redux';
-import { AppState } from '../../redux/reducers/root.reducer';
-import * as ArticleActions from '../../redux/actions/articles.actions';
+/* eslint-disable react/no-danger */
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router";
+import styled from "styled-components";
+import { loadArticleFromApi } from "../../api/article-service";
+import ArticleEntity from "../../classes/article-entity";
+import {
+  EArticlesState,
+  selectArticlesState,
+} from "../../redux/reducers/articles.reducer";
+import { selectSectionsState } from "../../redux/reducers/sections.reducer";
+import {
+  getArticleFromUrl,
+  tryStoreCurrentTechAndSubsection,
+} from "../../tools/url-helper";
+import LoadingSpinner from "../loading-spinner";
 
-declare var SyntaxHighlighter: any;
+declare let Prism: any;
 
-export interface IArticleProps {
+const StyledArticle = styled.div`
+  .error {
+    padding-top: 20px;
+  }
 
-}
+  .article {
+    margin: auto;
+    padding-top: 20px;
+    padding-left: 15px;
+    padding-right: 15px;
 
-export const Article: React.FC<IArticleProps> = (props) => {
-    
-    const sectionsState = useSelector((state: AppState) => state.sections);
-    const articlesState = useSelector((state: AppState) => state.articles);
-    const [article, setArticle] = useState<ArticleEntity>();
-
-    useEffect(() => {
-        tryStoreCurrentTechAndSubsection();
-        const articleFromUrl = getArticleFromUrl();
-        if (articleFromUrl) {
-            if (!article || article.articleId !== articleFromUrl.articleId) {
-                setArticle(articleFromUrl);
-                highlight();
-            }            
-        }
-    }, [articlesState.currentAction, sectionsState.currentAction]);
-    
-    function highlight() {
-        let retries = 10;
-        let tryHighlight = setTimeout(() => {
-            SyntaxHighlighter.defaults['toolbar'] = false;
-            SyntaxHighlighter.defaults['gutter'] = false;
-            SyntaxHighlighter.all();  
-            SyntaxHighlighter.highlight({gutter: false});            
-            retries--;
-            if (retries === 0) {
-                clearTimeout(tryHighlight);
-                return;
-            }
-        }, 100);
+    .article-content {
+      margin: auto;
+      max-width: 900px;
+      background-color: ${({ theme }) => theme.pallet.articleBackgroundColour};
+      padding: 15px;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 2px 2px,
+        rgba(0, 0, 0, 0.12) 0px 0px 2px;
+      color: ${({ theme }) => theme.pallet.foregroundColour1};
     }
+  }
+`;
 
-    return (
-        <React.Fragment>
-            {articlesState.currentAction === ArticleActions.LOADED_ARTICLES && article &&
-                <div className="article">
-                <div className="article-content"
-                    dangerouslySetInnerHTML={{ __html: article.articleHtml }}>
-                    </div>
-                </div>
-            }
+const Article: React.FC = () => {
+  const sectionsState = useSelector(selectSectionsState);
+  const articlesState = useSelector(selectArticlesState);
+  const [localArticle, setLocalArticle] = useState<ArticleEntity>();
+  const [loading, setLoading] = useState(true);
 
-            {articlesState.currentAction === ArticleActions.LOADING_ARTICLES &&
-                <div className="loading-spinner-container">
-                    <CircularProgress className="mat-spinner"></CircularProgress>
-                    <div>
-                        Loading article...
-                    </div>
-                </div>   
-            }
-        </React.Fragment>
-    );
-}
+  const params = useParams();
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const highlight = () => {
+    let retries = 10;
+    const tryHighlight = setTimeout(() => {
+      Prism.highlightAll();
+      retries -= 1;
+      if (retries === 0) {
+        clearTimeout(tryHighlight);
+      }
+    }, 100);
+  };
+
+  useEffect(() => {
+    tryStoreCurrentTechAndSubsection();
+    if (articlesState === EArticlesState.Loaded) {
+      const articleFromUrl = getArticleFromUrl();
+      if (articleFromUrl) {
+        if (
+          !localArticle ||
+          localArticle.articleId !== articleFromUrl.articleId
+        ) {
+          setLoading(true);
+          loadArticleFromApi(articleFromUrl.articleId).then((article) => {
+            setLocalArticle(article);
+            highlight();
+            setLoading(false);
+          });
+        }
+      }
+    }
+  }, [params, localArticle, sectionsState, articlesState]);
+
+  return (
+    <StyledArticle>
+      {articlesState === EArticlesState.Loaded && localArticle && (
+        <div className="article">
+          <div className="article-content">
+            <div
+              dangerouslySetInnerHTML={{ __html: localArticle.articleHtml }}
+            />
+          </div>
+        </div>
+      )}
+
+      {(articlesState === EArticlesState.Loading || loading) && (
+        <LoadingSpinner largeText={false} labelText="Loading Article..." />
+      )}
+    </StyledArticle>
+  );
+};
 
 export default Article;

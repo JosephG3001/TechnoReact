@@ -1,48 +1,88 @@
-import ArticleEntity from './../../classes/article-entity';
-import * as ArticleActions from './../actions/article.actions';
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { loadArticleFromApi } from "../../api/article-service";
+import ArticleEntity from "../../classes/article-entity";
+import { AppDispatch, AppState } from "../store";
+
+export enum EArticleState {
+  Idle,
+  Loading,
+  Loaded,
+  Failed,
+}
 
 export interface IArticleState {
-    currentAction: ArticleActions.AllArticleActions;
-    article: ArticleEntity | null;
+  article: ArticleEntity | null;
+  articleState: EArticleState;
 }
 
 const InitialArticleState: IArticleState = {
-    currentAction: ArticleActions.ARTICLE_IDLE,
-    article: null,
-}
+  article: null,
+  articleState: EArticleState.Idle,
+};
 
-export function articleReducer(state: IArticleState = InitialArticleState, action: ArticleActions.Actions): IArticleState {
-    switch (action.type) {
-        case (ArticleActions.ARTICLE_IDLE): {
-            return {
-                ...state,
-                currentAction: ArticleActions.ARTICLE_IDLE,
-            }
-        }
+const slice = createSlice({
+  name: "article",
+  initialState: InitialArticleState as IArticleState,
+  reducers: {
+    loadingArticle(state) {
+      state.article = null;
+      state.articleState = EArticleState.Loading;
+    },
+    loadedArticle(state, action: PayloadAction<ArticleEntity>) {
+      state.article = action.payload;
+      state.articleState = EArticleState.Loaded;
+    },
+    loadArticleFailed(state) {
+      state.articleState = EArticleState.Failed;
+    },
+    clearArticle(state) {
+      state.article = null;
+      state.articleState = EArticleState.Idle;
+    },
+  },
+});
 
-        case (ArticleActions.LOADING_ARTICLE): {
-            return {
-                ...state,
-                currentAction: ArticleActions.LOADING_ARTICLE,
-            };
-        }
+// Reducer
+export const articleReducer = slice.reducer;
+export const {
+  loadingArticle,
+  loadedArticle,
+  loadArticleFailed,
+  clearArticle,
+} = slice.actions;
 
-        case (ArticleActions.LOADED_ARTICLE): {
-            return {
-                ...state,
-                currentAction: ArticleActions.LOADED_ARTICLE,
-                article: action.article,
-            };
-        }
+// Selectors
+export const selectArticleState = (state: AppState) =>
+  state.article.articleState;
 
-        case (ArticleActions.LOADING_ARTICLE_FAIL): {
-            return {
-                ...state,                
-                currentAction: ArticleActions.LOADING_ARTICLE_FAIL,
-            }
-        }        
+export const selectArticleForEdit = (state: AppState) => state.article.article;
 
-        default:
-            return state;
-    }
-}
+// Thunks
+export const loadArticle = (articleId: string) => (dispatch: AppDispatch) => {
+  dispatch(loadingArticle());
+  loadArticleFromApi(articleId)
+    .then((article) => {
+      dispatch(loadedArticle(article));
+    })
+    .catch(() => {
+      dispatch(loadArticleFailed());
+    });
+};
+
+export const createNewArticle = (parentSectionId: string) => (
+  dispatch: AppDispatch
+) => {
+  dispatch(loadingArticle());
+
+  const article = new ArticleEntity();
+  article.DisplayOrder = 0;
+  article.articleHtml = "";
+  article.sectionId = parentSectionId;
+  article.visible = true;
+  article.articleName = "--New Article--";
+  article.articleDate = new Date().toString();
+  article.createdByUserId = "";
+  article.articleId = "";
+
+  dispatch(loadedArticle(article));
+};

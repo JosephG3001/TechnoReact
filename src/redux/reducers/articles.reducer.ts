@@ -1,48 +1,48 @@
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ArticleEntity from "../../classes/article-entity";
-import * as ArticlesActions from "../actions/articles.actions";
+import { AppState } from "../store";
+
+export enum EArticlesState {
+  Idle,
+  Loading,
+  Loaded,
+  Failed,
+}
 
 export interface IArticlesState {
-    currentAction: ArticlesActions.AllArticlesActions,
-    articleList: Array<ArticleEntity>;
+  currentState: EArticlesState;
+  articleList: Array<ArticleEntity>;
 }
 
-export const InitialArticlesState: IArticlesState = {
-    currentAction: ArticlesActions.ARTICLES_IDLE,
-    articleList: new Array<ArticleEntity>(),
-}
+const InitialArticlesState: IArticlesState = {
+  currentState: EArticlesState.Idle,
+  articleList: [],
+};
 
-export function articlesReducer(state: IArticlesState = InitialArticlesState, action: ArticlesActions.Actions) : IArticlesState {
-    switch (action.type) {
-        case (ArticlesActions.ARTICLES_IDLE): {
-            return {
-                ...state,
-                currentAction: ArticlesActions.ARTICLES_IDLE,
-            }
-        }        
+const slice = createSlice({
+  name: "articles",
+  initialState: InitialArticlesState as IArticlesState,
+  reducers: {
+    loadingArticles(state) {
+      state.currentState = EArticlesState.Loading;
+    },
+    loadedArticles(state, action: PayloadAction<ArticleEntity[]>) {
+      state.currentState = EArticlesState.Loaded;
+      state.articleList = action.payload;
+    },
+    loadArticlesFailed(state) {
+      state.currentState = EArticlesState.Failed;
+    },
+  },
+});
 
-        case (ArticlesActions.LOADING_ARTICLES): {
-            return {
-                ...state,
-                currentAction: ArticlesActions.LOADING_ARTICLES,
-            }
-        }
+export const articlesReducer = slice.reducer;
+export const {
+  loadingArticles,
+  loadedArticles,
+  loadArticlesFailed,
+} = slice.actions;
 
-        case (ArticlesActions.LOADED_ARTICLES): {
-            return {
-                ...state,
-                articleList: action.articleList,
-                currentAction: ArticlesActions.LOADED_ARTICLES,
-            }
-        }
-
-        case (ArticlesActions.LOAD_ARTICLES_FAIL): {
-            return {
-                ...state,
-                currentAction: ArticlesActions.LOAD_ARTICLES_FAIL,
-            }
-        }    
-
-        default:
-            return state;
-    }
-}
+export const selectArticlesState = (state: AppState) =>
+  state.articles.currentState;
+export const selectArticles = (state: AppState) => state.articles.articleList;

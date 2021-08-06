@@ -1,57 +1,88 @@
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Section from "../../classes/section";
-import * as SectionsActions from '../actions/sections.actions';
+import { AppState } from "../store";
+
+export enum ESectionsState {
+  Idle,
+  loading,
+  loaded,
+  Failed,
+}
 
 export interface ISectionsState {
-    currentAction: SectionsActions.AllSectionsAction;
-    menuItems: Array<Section>;
-    currentTech?: Section;
-    currentSubSection?: Section;
+  currentState: ESectionsState;
+  menuItems: Array<Section>;
+  currentTech?: Section;
+  currentSubSection?: Section;
 }
 
-export const InitialSectionsState: ISectionsState = {
-    currentAction: SectionsActions.SECTIONS_IDLE,
-    menuItems: new Array<Section>(),    
-}
+const InitialSectionsState: ISectionsState = {
+  currentState: ESectionsState.Idle,
+  menuItems: [],
+};
 
-export function sectionsReducer(state: ISectionsState = InitialSectionsState, action: SectionsActions.Actions): ISectionsState {
-    switch (action.type) {
-        case (SectionsActions.LOADING_SECTIONS): {
-            return {
-                ...state,
-                currentAction: SectionsActions.LOADING_SECTIONS
-            }
-        }
+const slice = createSlice({
+  name: "sections",
+  initialState: InitialSectionsState as ISectionsState,
+  reducers: {
+    loadingSections(state) {
+      state.currentState = ESectionsState.loading;
+    },
+    loadedSections(state, action: PayloadAction<Section[]>) {
+      state.currentState = ESectionsState.loaded;
+      state.menuItems = action.payload;
+    },
+    loadSectionsFailed(state) {
+      state.currentState = ESectionsState.Failed;
+    },
+    setCurrentTech(state, action: PayloadAction<Section>) {
+      state.currentTech = action.payload;
+    },
+    setCurrentSubSection(state, action: PayloadAction<Section>) {
+      state.currentSubSection = action.payload;
+    },
+  },
+});
 
-        case (SectionsActions.LOADED_SECTIONS): {
-            return {
-                ...state,
-                menuItems: action.sections,
-                currentAction: SectionsActions.LOADED_SECTIONS
-            }
-        }
+// Reducer
+export const sectionsReducer = slice.reducer;
+export const {
+  loadingSections,
+  loadedSections,
+  loadSectionsFailed,
+  setCurrentTech,
+  setCurrentSubSection,
+} = slice.actions;
 
-        case (SectionsActions.LOAD_SECTIONS_FAILED): {
-            return {
-                ...state,
-                currentAction: SectionsActions.LOAD_SECTIONS_FAILED
-            }
-        }
+// Selectors
+export const selectCurrentTech = (state: AppState) =>
+  state.sections.currentTech;
 
-        case (SectionsActions.SET_CURRENT_TECH): {
-            return {
-                ...state,
-                currentTech: action.section,
-            }
-        }
+export const selectCurrentSubSection = (state: AppState) =>
+  state.sections.currentSubSection;
 
-        case (SectionsActions.SET_CURRENT_SUBSECTION): {
-            return {
-                ...state,
-                currentSubSection: action.section,
-            }
-        }
+export const selectSections = (state: AppState) => state.sections.menuItems;
 
-        default:
-            return state;
+export const selectSectionsState = (state: AppState) =>
+  state.sections.currentState;
+
+const searchForSection = (
+  sections: Section[],
+  sectionId?: string
+): Section | null => {
+  for (let i = 0; i < sections.length; i++) {
+    if (sections[i].sectionId === sectionId) {
+      return sections[i];
     }
-}
+    const child = searchForSection(sections[i].inverseParentSection, sectionId);
+    if (child) {
+      return child;
+    }
+  }
+  return null;
+};
+
+export const selectSection = (sectionId?: string) =>
+  createSelector([selectSections], (sections: Section[]) => {
+    return searchForSection(sections, sectionId);
+  });
