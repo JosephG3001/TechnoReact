@@ -16,6 +16,15 @@ export const PublicSidebarItem: React.FC<ISidebarItemProps> = ({ section }) => {
     setCollapsed(!collapsed);
   };
 
+  const sectionHasArticles = (s: Section) => {
+    for (let i = 0; i < s.articleList.length; i++) {
+      if (s.articleList[i].visible) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   return (
     <>
       <div role="button" className="section-parent" onClick={toggleSubMenu}>
@@ -48,9 +57,11 @@ export const PublicSidebarItem: React.FC<ISidebarItemProps> = ({ section }) => {
         className="section-children"
         height={collapsed ? 0 : "auto"}
       >
-        {section.inverseParentSection.map((s: Section) => (
-          <PublicSidebarItem key={s.sectionId} section={s} />
-        ))}
+        {section.inverseParentSection
+          .filter((s: Section) => sectionHasArticles(s))
+          .map((s: Section) => (
+            <PublicSidebarItem key={s.sectionId} section={s} />
+          ))}
       </AnimateHeight>
     </>
   );
