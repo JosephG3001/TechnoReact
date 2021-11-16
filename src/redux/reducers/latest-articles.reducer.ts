@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loadLatestArticlesFromApi } from "../../api/article-service";
-import ArticleEntity from "../../classes/article-entity";
+import RecentArticle from "../../classes/recent-article";
 import ELoadingState from "../../enums/loading-state";
+import findSection from "../../tools/section-utils";
 import { showErrorToast } from "../../tools/toast";
 import { AppDispatch, AppState } from "../store";
 
 export interface ILatestArticlesState {
   currentState: ELoadingState;
-  articleList: Array<ArticleEntity>;
+  articleList: Array<RecentArticle>;
 }
 
 const InitialArticlesState: ILatestArticlesState = {
@@ -22,7 +23,7 @@ const slice = createSlice({
     loadingLatestArticles(state) {
       state.currentState = ELoadingState.Loading;
     },
-    loadedLatestArticles(state, action: PayloadAction<ArticleEntity[]>) {
+    loadedLatestArticles(state, action: PayloadAction<RecentArticle[]>) {
       state.currentState = ELoadingState.Loaded;
       state.articleList = action.payload;
     },
@@ -44,11 +45,23 @@ export const selectLatestArticlesState = (state: AppState) =>
 export const selectLatestArticles = (state: AppState) =>
   state.latestArticles.articleList;
 
-export const loadLatestArticles = () => (dispatch: AppDispatch) => {
+export const loadLatestArticles = () => (
+  dispatch: AppDispatch,
+  getState: () => AppState
+) => {
   dispatch(loadingLatestArticles());
+  const sections = getState().sections.menuItems;
   loadLatestArticlesFromApi()
     .then((articles) => {
-      dispatch(loadedLatestArticles(articles));
+      const recentArticles: RecentArticle[] = [];
+      articles.forEach((article) => {
+        const section = findSection(article.sectionId, sections);
+        recentArticles.push({
+          article,
+          section,
+        });
+      });
+      dispatch(loadedLatestArticles(recentArticles));
     })
     .catch((error) => {
       showErrorToast(error);

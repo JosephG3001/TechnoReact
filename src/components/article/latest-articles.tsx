@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import ArticleEntity from "../../classes/article-entity";
-import Section from "../../classes/section";
+import RecentArticle from "../../classes/recent-article";
 import ELoadingState from "../../enums/loading-state";
 import {
   loadLatestArticles,
@@ -69,29 +68,17 @@ const LatestArticles = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(loadLatestArticles());
-  }, [dispatch]);
-
-  const findSection = (sectionId, sections: Section[]) => {
-    let section = sections.find((s) => s.sectionId === sectionId);
-    if (!section) {
-      for (let i = 0; i < sections.length; i++) {
-        section = findSection(sectionId, sections[i].inverseParentSection);
-        if (section) {
-          break;
-        }
-      }
+    if (sectionsFromState && sectionsFromState.length > 0) {
+      dispatch(loadLatestArticles());
     }
-    return section;
-  };
+  }, [dispatch, sectionsFromState]);
 
-  const getArticleUrl = (articleEntity: ArticleEntity) => {
-    const section = findSection(articleEntity.sectionId, sectionsFromState);
+  const getArticleUrl = (recentArticle: RecentArticle) => {
     return `/articles/${encodeURIComponent(
-      section.parentSectionName
-    )}/${encodeURIComponent(section.sectionName)}/article/${encodeURIComponent(
-      articleEntity.articleName
-    )}`;
+      recentArticle.section.parentSectionName || ""
+    )}/${encodeURIComponent(
+      recentArticle.section.sectionName
+    )}/article/${encodeURIComponent(recentArticle.article.articleName)}`;
   };
 
   return (
@@ -111,22 +98,25 @@ const LatestArticles = () => {
         sectionsFromState &&
         sectionsFromState.length > 0 && (
           <div>
-            {latestArticles.map((articleEntity) => (
+            {latestArticles.map((recentArticle) => (
               <Link
-                key={articleEntity.articleId}
+                key={recentArticle.article.articleId}
                 className="articles-row"
                 to={{
-                  pathname: getArticleUrl(articleEntity),
+                  pathname: getArticleUrl(recentArticle),
                 }}
               >
                 <div>
                   <label className="article-date">
-                    {new Date(articleEntity.articleDate).toDateString()}
+                    {new Date(recentArticle.article.articleDate).toDateString()}
                   </label>
                 </div>
                 <div className="article-text-with-icon">
                   <div className="material-icons">insert_drive_file</div>
-                  <h3>{articleEntity.articleName}</h3>
+                  <h3>
+                    {recentArticle.section.sectionName}{" "}
+                    {recentArticle.article.articleName}
+                  </h3>
                 </div>
               </Link>
             ))}

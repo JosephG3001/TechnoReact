@@ -1,7 +1,7 @@
 const globalThemeColour1 = "#5F901C";
 const globalThemeColour2 = "#89cf29";
 const globalThemeColour3 = "#395610";
-const globalGlassColour1 = "rgba(0,0,0,0.5)";
+const globalGlassColour1 = "rgba(0,0,0,0.7)";
 const globalGlassColour2 = "rgba(0,0,0,0.9)";
 
 export const theme = {
