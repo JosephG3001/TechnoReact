@@ -83,7 +83,7 @@ export function getSubSectionFromPath(path: string): Section | null {
   return section;
 }
 
-export function tryStoreCurrentTechAndSubsection() {
+export const tryStoreCurrentTechAndSubsection = () => {
   const tech = getTechFromURL();
   const subSection = getSubSectionFromURL();
   let techChanged = false;
@@ -106,7 +106,7 @@ export function tryStoreCurrentTechAndSubsection() {
     }
 
     if (techChanged || subSectionChanged) {
-      technoStore.dispatch(loadingArticles);
+      technoStore.dispatch(loadingArticles());
       loadArticlesFromApi(subSection.sectionId).then(
         (result: ArticleEntity[]) => {
           technoStore.dispatch(loadedArticles(result));
@@ -114,4 +114,4 @@ export function tryStoreCurrentTechAndSubsection() {
       );
     }
   }
-}
+};
