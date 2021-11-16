@@ -6,6 +6,7 @@ import { loadUser, reducer as oidcReducer } from "redux-oidc";
 import { articleReducer } from "./reducers/article.reducer";
 import { articlesReducer } from "./reducers/articles.reducer";
 import { errorReducer } from "./reducers/error.reducer";
+import { latestArticlesReducer } from "./reducers/latest-articles.reducer";
 import { newsReducer } from "./reducers/news.reducer";
 import { sectionsReducer } from "./reducers/sections.reducer";
 import { userReducer } from "./reducers/user.reducer";
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   sections: sectionsReducer,
   articles: articlesReducer,
   article: articleReducer,
+  latestArticles: latestArticlesReducer,
   news: newsReducer,
   router: connectRouter(history),
   oidcState: oidcReducer,

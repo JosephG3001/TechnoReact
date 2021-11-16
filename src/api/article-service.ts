@@ -22,6 +22,14 @@ export const loadArticlesFromApi = (
     });
 };
 
+export const loadLatestArticlesFromApi = (): Promise<ArticleEntity[]> => {
+  return fetch(`${Global.contentUrl}/api/articles/latest`)
+    .then((result) => result.json())
+    .then((result: ArticleEntity[]) => {
+      return result.filter((a) => a.visible);
+    });
+};
+
 export const loadArticleFromApi = (
   articleId: string
 ): Promise<ArticleEntity> => {

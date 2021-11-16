@@ -7,7 +7,7 @@ import {
   clearArticle,
   selectArticleForEdit,
 } from "../../../../redux/reducers/article.reducer";
-import removeArticleFromRedux from "../../../../redux/reducers/section-thunks/remove-article-from-redux";
+import removeArticleFromRedux from "../../../../redux/reducers/thunks/remove-article-from-redux";
 import { StyledModalFooter } from "../../../../styles";
 import { showSuccessToast } from "../../../../tools/toast";
 

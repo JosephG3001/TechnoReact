@@ -4,8 +4,8 @@ import styled from "styled-components";
 import Section from "../../../classes/section";
 import ErrorTriangle from "../../../components/error-triangle";
 import LoadingSpinner from "../../../components/loading-spinner";
+import ELoadingState from "../../../enums/loading-state";
 import {
-  ESectionsState,
   selectSections,
   selectSectionsState,
 } from "../../../redux/reducers/sections.reducer";
@@ -121,15 +121,15 @@ const PublicSidebarItems: React.FC = () => {
   return (
     <StyledSidebarItems>
       <div className="sidebar-items">
-        {sectionsState === ESectionsState.loading && (
+        {sectionsState === ELoadingState.Loading && (
           <LoadingSpinner largeText={false} labelText="Loading menu..." />
         )}
 
-        {sectionsState === ESectionsState.Failed && (
+        {sectionsState === ELoadingState.Failed && (
           <ErrorTriangle labelText="Failed to load menu" />
         )}
 
-        {sectionsState === ESectionsState.loaded && (
+        {sectionsState === ELoadingState.Loaded && (
           <nav>
             {sections
               .filter((section: Section) =>

@@ -1,21 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import ArticleEntity from "../../classes/article-entity";
+import ELoadingState from "../../enums/loading-state";
 import { AppState } from "../store";
 
-export enum EArticlesState {
-  Idle,
-  Loading,
-  Loaded,
-  Failed,
-}
-
 export interface IArticlesState {
-  currentState: EArticlesState;
+  currentState: ELoadingState;
   articleList: Array<ArticleEntity>;
 }
 
 const InitialArticlesState: IArticlesState = {
-  currentState: EArticlesState.Idle,
+  currentState: ELoadingState.Idle,
   articleList: [],
 };
 
@@ -24,14 +18,14 @@ const slice = createSlice({
   initialState: InitialArticlesState as IArticlesState,
   reducers: {
     loadingArticles(state) {
-      state.currentState = EArticlesState.Loading;
+      state.currentState = ELoadingState.Loading;
     },
     loadedArticles(state, action: PayloadAction<ArticleEntity[]>) {
-      state.currentState = EArticlesState.Loaded;
+      state.currentState = ELoadingState.Loaded;
       state.articleList = action.payload;
     },
     loadArticlesFailed(state) {
-      state.currentState = EArticlesState.Failed;
+      state.currentState = ELoadingState.Failed;
     },
   },
 });

@@ -2,18 +2,17 @@ import React, { useEffect } from "react";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import Section from "../../../classes/section";
+import ELoadingState from "../../../enums/loading-state";
 import {
   clearArticle,
-  EArticleState,
   selectArticleForEdit,
   selectArticleState,
 } from "../../../redux/reducers/article.reducer";
-import loadSections from "../../../redux/reducers/section-thunks/load-sections";
 import {
-  ESectionsState,
   selectSections,
   selectSectionsState,
 } from "../../../redux/reducers/sections.reducer";
+import loadSections from "../../../redux/reducers/thunks/load-sections";
 import ErrorTriangle from "../../error-triangle";
 import LoadingSpinner from "../../loading-spinner";
 import ContentEditor from "../content-editor";
@@ -97,29 +96,29 @@ const ContentExplorer: React.FC = () => {
         <div className="content-menu">
           <h1 className="content-explorer-header">Content Explorer</h1>
           <div className="content-items-wrapper">
-            {sectionsState === ESectionsState.loading && (
+            {sectionsState === ELoadingState.Loading && (
               <LoadingSpinner
                 labelText="Loading sections..."
                 largeText={false}
               />
             )}
 
-            {sectionsState === ESectionsState.loaded && (
+            {sectionsState === ELoadingState.Loaded && (
               <SectionMenuItem
                 section={rootSection}
                 key={rootSection.sectionId}
               />
             )}
 
-            {sectionsState === ESectionsState.Failed && (
+            {sectionsState === ELoadingState.Failed && (
               <ErrorTriangle labelText="Failed to load sections" />
             )}
           </div>
         </div>
         <div className="content-editor">
           <h1 className="content-editor-header">Content Editor</h1>
-          {articleState === EArticleState.Idle && <div>No Article</div>}
-          {articleState === EArticleState.Loading && (
+          {articleState === ELoadingState.Idle && <div>No Article</div>}
+          {articleState === ELoadingState.Loading && (
             <LoadingSpinner labelText="Loading Article..." largeText={false} />
           )}
           {articleForEdit && <ContentEditor articleForEdit={articleForEdit} />}

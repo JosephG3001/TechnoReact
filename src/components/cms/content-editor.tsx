@@ -11,12 +11,12 @@ import InputTextBox from "../../inputs/input-textbox";
 import InputToggleSwitch from "../../inputs/input-toggle-switch";
 import TechnoButton from "../../inputs/techno-button";
 import { loadedArticle } from "../../redux/reducers/article.reducer";
-import addArticleToRedux from "../../redux/reducers/section-thunks/add-article-to-redux";
-import updateArticleInRedux from "../../redux/reducers/section-thunks/update-article-in-redux";
 import {
   selectSection,
   selectSections,
 } from "../../redux/reducers/sections.reducer";
+import addArticleToRedux from "../../redux/reducers/thunks/add-article-to-redux";
+import updateArticleInRedux from "../../redux/reducers/thunks/update-article-in-redux";
 import setServerSideFormErrors from "../../tools/formUtils";
 import nameof from "../../tools/nameof";
 import {

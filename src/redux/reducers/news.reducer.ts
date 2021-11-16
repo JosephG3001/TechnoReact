@@ -1,23 +1,17 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loadNewsFromApi } from "../../api/news-service";
 import NewsEntity from "../../classes/news-entity";
+import ELoadingState from "../../enums/loading-state";
 import { showErrorToast } from "../../tools/toast";
 import { AppDispatch, AppState } from "../store";
 
-export enum ENewsState {
-  Idle,
-  Loading,
-  Loaded,
-  Failed,
-}
-
 export interface INewsState {
-  currentState: ENewsState;
+  currentState: ELoadingState;
   news: NewsEntity[];
 }
 
 const InitialNewsState: INewsState = {
-  currentState: ENewsState.Idle,
+  currentState: ELoadingState.Idle,
   news: [],
 };
 
@@ -26,14 +20,14 @@ const slice = createSlice({
   initialState: InitialNewsState as INewsState,
   reducers: {
     loadingNews(state) {
-      state.currentState = ENewsState.Loading;
+      state.currentState = ELoadingState.Loading;
     },
     loadedNews(state, action: PayloadAction<NewsEntity[]>) {
-      state.currentState = ENewsState.Loaded;
+      state.currentState = ELoadingState.Loaded;
       state.news = action.payload;
     },
     loadNewsFailed(state) {
-      state.currentState = ENewsState.Failed;
+      state.currentState = ELoadingState.Failed;
     },
   },
 });

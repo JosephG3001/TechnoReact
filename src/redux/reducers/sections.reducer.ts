@@ -1,23 +1,17 @@
 import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import Section from "../../classes/section";
+import ELoadingState from "../../enums/loading-state";
 import { AppState } from "../store";
 
-export enum ESectionsState {
-  Idle,
-  loading,
-  loaded,
-  Failed,
-}
-
 export interface ISectionsState {
-  currentState: ESectionsState;
+  currentState: ELoadingState;
   menuItems: Array<Section>;
   currentTech?: Section;
   currentSubSection?: Section;
 }
 
 const InitialSectionsState: ISectionsState = {
-  currentState: ESectionsState.Idle,
+  currentState: ELoadingState.Idle,
   menuItems: [],
 };
 
@@ -26,14 +20,14 @@ const slice = createSlice({
   initialState: InitialSectionsState as ISectionsState,
   reducers: {
     loadingSections(state) {
-      state.currentState = ESectionsState.loading;
+      state.currentState = ELoadingState.Loading;
     },
     loadedSections(state, action: PayloadAction<Section[]>) {
-      state.currentState = ESectionsState.loaded;
+      state.currentState = ELoadingState.Loaded;
       state.menuItems = action.payload;
     },
     loadSectionsFailed(state) {
-      state.currentState = ESectionsState.Failed;
+      state.currentState = ELoadingState.Failed;
     },
     setCurrentTech(state, action: PayloadAction<Section>) {
       state.currentTech = action.payload;

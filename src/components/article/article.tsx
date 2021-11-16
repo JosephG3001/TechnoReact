@@ -5,10 +5,8 @@ import { useParams } from "react-router";
 import styled from "styled-components";
 import { loadArticleFromApi } from "../../api/article-service";
 import ArticleEntity from "../../classes/article-entity";
-import {
-  EArticlesState,
-  selectArticlesState,
-} from "../../redux/reducers/articles.reducer";
+import ELoadingState from "../../enums/loading-state";
+import { selectArticlesState } from "../../redux/reducers/articles.reducer";
 import { selectSectionsState } from "../../redux/reducers/sections.reducer";
 import {
   getArticleFromUrl,
@@ -63,7 +61,7 @@ const Article: React.FC = () => {
 
   useEffect(() => {
     tryStoreCurrentTechAndSubsection();
-    if (articlesState === EArticlesState.Loaded) {
+    if (articlesState === ELoadingState.Loaded) {
       const articleFromUrl = getArticleFromUrl();
       if (articleFromUrl) {
         if (
@@ -83,7 +81,7 @@ const Article: React.FC = () => {
 
   return (
     <StyledArticle>
-      {articlesState === EArticlesState.Loaded && localArticle && (
+      {articlesState === ELoadingState.Loaded && localArticle && (
         <div className="article">
           <div className="article-content">
             <div
@@ -93,7 +91,7 @@ const Article: React.FC = () => {
         </div>
       )}
 
-      {(articlesState === EArticlesState.Loading || loading) && (
+      {(articlesState === ELoadingState.Loading || loading) && (
         <LoadingSpinner largeText={false} labelText="Loading Article..." />
       )}
     </StyledArticle>

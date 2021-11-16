@@ -3,8 +3,8 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import ELoadingState from "../../enums/loading-state";
 import {
-  EArticlesState,
   selectArticles,
   selectArticlesState,
 } from "../../redux/reducers/articles.reducer";
@@ -119,15 +119,15 @@ const Articles: React.FC = () => {
             <h2>{currentSubSection.sectionName}</h2>
           </div>
 
-          {articlesState === EArticlesState.Failed && (
+          {articlesState === ELoadingState.Failed && (
             <ErrorTriangle labelText="Failed to load articles" />
           )}
 
-          {articlesState === EArticlesState.Loading && (
+          {articlesState === ELoadingState.Loading && (
             <LoadingSpinner labelText="Loading articles..." largeText={false} />
           )}
 
-          {articlesState === EArticlesState.Loaded &&
+          {articlesState === ELoadingState.Loaded &&
             articles &&
             articles.map((item) => (
               <Link
